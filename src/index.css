@@ -1,2 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
 @import "tailwindcss";
-@plugin "daisyui"; 
+@import "leaflet/dist/leaflet.css";
+
+/* Enable themes */
+@plugin "daisyui" {
+  themes: light --default, dark;
+}
+
+/* Global static background color based on html[data-theme] */
+:root {
+  /* main page bg for light (default fallback) */
+  --main-background: #BCBBBC;
+}
+
+html[data-theme='dark'] {
+  --main-background: #000000;
+}
+
+/* 
+#1682FD bluesh for light 
+*/
+/* Light theme variables */
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  color-scheme: light;
+
+  --color-background: #FFFFFF;
+  /* white content background */
+  --color-text: #000000;
+  /* black text */
+  --color-button: #F48023;
+  /* orange button */
+}
+
+/* Dark theme variables */
+@plugin "daisyui/theme" {
+  name: "dark";
+  prefersdark: true;
+  color-scheme: dark;
+
+  --color-background: #262D34;
+  /* deep dark gray bg */
+  --color-text: #F7F7F7;
+  /* light gray text */
+  --color-button: #FF6934;
+  /* soft orange button */
+}
+
+/* Font */
+.font-urbanist {
+  font-family: "Urbanist", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
