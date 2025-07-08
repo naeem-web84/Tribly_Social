@@ -2,9 +2,9 @@ import { useNavigate } from "react-router";
 import { useState } from "react"; 
 import useAxiosSecure from "../../hooks/useAxiosSecure/useAxiosSecure";
 import SocialLogin from "../SocialLogin/SocialLogin";
-import RegisterForm from "./RegisterForm";
-import useAuth from "../../hooks/UseAuth/useAuth"; 
+import RegisterForm from "./RegisterForm";  
 import Loading from "../../components/loading/Loading";
+import useAuth from "../../hooks/UseAuth/UseAuth";
 
 const Register = () => {
   const { createUser } = useAuth();
@@ -75,7 +75,7 @@ const Register = () => {
     }
   };
 
-  if (loading) return <Loading></Loading>
+  if (loading) return <Loading></Loading>;
 
   return (
     <div className="hero min-h-screen bg-base-200">
