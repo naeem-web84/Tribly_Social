@@ -1,82 +1,73 @@
-import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router";
-import useAuth from "../../hooks/UseAuth/UseAuth";
-import { useState } from "react";
+// pages/Register.jsx
+import { useNavigate } from "react-router";
+import { useState } from "react"; 
+import useAxiosSecure from "../../hooks/useAxiosSecure/useAxiosSecure";
 import SocialLogin from "../SocialLogin/SocialLogin";
+import RegisterForm from "./RegisterForm";
+import useAuth from "../../hooks/UseAuth/useAuth";
 
 const Register = () => {
   const { createUser } = useAuth();
   const navigate = useNavigate();
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
+  const axiosSecure = useAxiosSecure();
+  const image_api_key = import.meta.env.VITE_IMAGE_API_KEY;
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm();
+  const onSubmit = async (data) => {
+    const { name, email, password, about, terms } = data;
+    const imageFile = data.image[0];
 
-  const onSubmit = data => {
-    const { email, password } = data;
+    if (!terms) {
+      setError("You must accept the terms and conditions.");
+      return;
+    }
 
-    createUser(email, password)
-      .then((result) => {
-        console.log(result.user);
-      })
-      .catch(error => {
-        console.error(error);
-      })
+    try {
+      // 1. Upload image to imgbb
+      const formData = new FormData();
+      formData.append("image", imageFile);
 
+      const res = await fetch(`https://api.imgbb.com/1/upload?key=${image_api_key}`, {
+        method: "POST",
+        body: formData
+      });
 
+      const imgData = await res.json();
+      if (!imgData.success) throw new Error("Image upload failed");
+
+      const photoURL = imgData.data.url;
+
+      // 2. Create user with Firebase
+      const result = await createUser(email, password);
+      console.log("User created:", result.user);
+
+      // 3. Save user info in DB
+      const userInfo = {
+        userName: name,
+        email,
+        about,
+        role: "user",
+        membershipStatus: "general",
+        photo: photoURL,
+        created_at: new Date().toISOString(),
+        last_log_in: new Date().toISOString()
+      };
+
+      const dbRes = await axiosSecure.post("/users", userInfo);
+      console.log("User saved:", dbRes.data);
+
+      navigate("/");
+    } catch (err) {
+      console.error("Registration failed:", err);
+      setError(err.message);
+    }
   };
 
   return (
     <div className="hero min-h-screen bg-base-200">
       <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-        <form onSubmit={handleSubmit(onSubmit)} className="card-body">
-          <h2 className="text-center text-2xl font-bold">Register</h2>
-
-          {/* Email */}
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text">Email</span>
-            </label>
-            <input
-              type="email"
-              placeholder="Enter email"
-              className="input input-bordered"
-              {...register("email", { required: "Email is required" })}
-            />
-            {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
-          </div>
-
-          {/* Password */}
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text">Password</span>
-            </label>
-            <input
-              type="password"
-              placeholder="Enter password"
-              className="input input-bordered"
-              {...register("password", {
-                required: "Password is required",
-                minLength: { value: 6, message: "Minimum 6 characters required" }
-              })}
-            />
-            {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
-          </div>
-
-          {/* Firebase Error */}
-          {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
-
-          <div className="form-control mt-4">
-            <button className="btn btn-primary">Register</button>
-          </div>
-          <p><small>Already have an account? <Link
-            className="btn btn-link -ml-3" to='/login'>Login</Link></small></p>
-        </form>
-        <SocialLogin></SocialLogin>
+        <RegisterForm onSubmit={onSubmit} error={error} />
+        <SocialLogin />
       </div>
     </div>
   );
