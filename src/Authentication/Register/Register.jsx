@@ -1,15 +1,16 @@
-// pages/Register.jsx
 import { useNavigate } from "react-router";
 import { useState } from "react"; 
 import useAxiosSecure from "../../hooks/useAxiosSecure/useAxiosSecure";
 import SocialLogin from "../SocialLogin/SocialLogin";
 import RegisterForm from "./RegisterForm";
-import useAuth from "../../hooks/UseAuth/useAuth";
+import useAuth from "../../hooks/UseAuth/useAuth"; 
+import Loading from "../../components/loading/Loading";
 
 const Register = () => {
   const { createUser } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const axiosSecure = useAxiosSecure();
   const image_api_key = import.meta.env.VITE_IMAGE_API_KEY;
 
@@ -23,13 +24,15 @@ const Register = () => {
     }
 
     try {
+      setLoading(true);
+
       // 1. Upload image to imgbb
       const formData = new FormData();
       formData.append("image", imageFile);
 
       const res = await fetch(`https://api.imgbb.com/1/upload?key=${image_api_key}`, {
         method: "POST",
-        body: formData
+        body: formData,
       });
 
       const imgData = await res.json();
@@ -46,22 +49,33 @@ const Register = () => {
         userName: name,
         email,
         about,
-        role: "user",
+        role: "user",              // default role user
         membershipStatus: "general",
         photo: photoURL,
         created_at: new Date().toISOString(),
-        last_log_in: new Date().toISOString()
+        last_log_in: new Date().toISOString(),
       };
 
       const dbRes = await axiosSecure.post("/users", userInfo);
       console.log("User saved:", dbRes.data);
 
-      navigate("/");
+      // 4. Redirect based on role
+      // if (userInfo.role === "admin") {
+      //   navigate("/admin");
+      // } else {
+      //   navigate("/dashboard");
+      // }
+
+      navigate('/')
     } catch (err) {
       console.error("Registration failed:", err);
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) return <Loading></Loading>
 
   return (
     <div className="hero min-h-screen bg-base-200">

@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate } from "react-router";
 import MainLayouts from "../Layouts/MainLayouts/MainLayouts";
 import Login from "../Authentication/Login/Login";
 import Register from "../Authentication/Register/Register";
+import Home from "../pages/Home/Home";
 
 // User Dashboard imports
 // import UserDashboardLayout from "../Layouts/UserDashboardLayout/UserDashboardLayout";
@@ -23,7 +24,7 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate to="/login" replace />,  // Redirect landing to login
+        element: <Home></Home>
       },
       {
         path: "/login",
