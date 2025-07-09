@@ -100,7 +100,7 @@ const Navbar = () => {
                     {user.displayName || user.email}
                   </div>
                   <Link
-                    to="/dashboard"
+                    to="/dashboard/user"
                     className="block px-2 py-2 hover:bg-gray-200 rounded text-sm"
                   >
                     Dashboard
