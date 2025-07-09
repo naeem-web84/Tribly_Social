@@ -2,42 +2,38 @@
 @import "tailwindcss";
 @import "leaflet/dist/leaflet.css";
 
-/* Enable themes */
+/* Enable daisyUI themes */
 @plugin "daisyui" {
-  themes: light --default, dark;
+  themes: light --default, dark --prefersdark;
 }
 
-/* Global static background color based on html[data-theme] */
-:root {
-  --main-background: #BCBBBC; /* Light gray */
-}
-
-html[data-theme='dark'] {
-  --main-background: #09090a; /* Black */
-}
-
-/* Light theme variables */
+/* Light theme */
 @plugin "daisyui/theme" {
   name: "light";
   default: true;
   color-scheme: light;
 
-  --color-background: #263640;      /* Dark Blue Gray */
-  --color-text: #4682B4;            /* Steel Blue */
-  --color-button: #4682B4;          /* Steel Blue */
-  --color-button-text: #FFFFFF;     /* White */
+  --color-primary: #4682B4;              /* Steel Blue - primary color used for buttons, links, highlights */
+  --color-primary-content: #263640;      /* White - text color on primary backgrounds (e.g., button text) */ 
+  --color-secondary: #263640;            /* Dark Blue Gray - secondary color, can be used for backgrounds, accents */
+  --color-base-100: #ffffff;              /* White - base background color for page or containers */
+  --color-base-content: #262D34;          /* Dark Blue Gray - main text color on base backgrounds */
 }
 
-/* Dark theme variables */
+/* Dark theme */
 @plugin "daisyui/theme" {
   name: "dark";
   prefersdark: true;
   color-scheme: dark;
 
-  --color-background: #262D34;      /* Charcoal Gray */
-  --color-text: #FFFFFF;            /* White */
-  --color-button: #FF6934;          /* Soft Orange */
-  --color-button-text: #FFFFFF;     /* White */
+  --color-primary: #FF6934;              /* Soft Orange - primary color used for buttons, links, highlights */ 
+  
+  /* Soft Orange - primary color used for buttons, links, highlights */
+  --color-primary-content: #FFFFFF;      /* White - text color on primary backgrounds (e.g., button text) */
+
+  --color-secondary: #262D34;            /* Charcoal Gray - secondary color, used for backgrounds, accents */
+  --color-base-100: #262D34;             /* Charcoal Gray - base background color for page or containers */
+  --color-base-content: #ef4444;        /* White - main text color on base backgrounds */
 }
 
 /* Font */
@@ -45,4 +41,4 @@ html[data-theme='dark'] {
   font-family: "Urbanist", sans-serif;
   font-weight: 400;
   font-style: normal;
-} 
+}
