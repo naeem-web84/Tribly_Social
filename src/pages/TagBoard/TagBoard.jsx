@@ -47,7 +47,7 @@ const TagBoard = () => {
               {tags.map((tag) => (
                 <span
                   key={tag}
-                  className="badge badge-outline border-primary text-primary-content hover:bg-primary hover:text-white transition"
+                  className="badge badge-outline border-primary text-secondary-content hover:bg-primary hover:text-white transition"
                 >
                   #{tag}
                 </span>

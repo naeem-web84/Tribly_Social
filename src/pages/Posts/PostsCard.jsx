@@ -1,44 +1,90 @@
-import React from "react";
-import PostActions from "./PostActions";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router";
+import {
+  FaRegThumbsUp,
+  FaRegThumbsDown,
+} from "react-icons/fa";
+import useAxios from "../../hooks/useAxiosSecure/useAxios";
 
-const PostCard = ({ post }) => {
+const PostsCard = ({ post }) => {
   const {
     authorImage,
-    authorName,
     postTitle,
-    postDescription,
     tag,
+    postTime,
+    _id,
+    upVote,
+    downVote,
   } = post;
 
+  const axios = useAxios();
+  const [commentCount, setCommentCount] = useState(0);
+
+  useEffect(() => {
+    // Fetch comment count by postTitle
+    axios.get(`/comments/count/${postTitle}`).then(res => {
+      setCommentCount(res.data.count || 0);
+    });
+  }, [axios, postTitle]);
+
+  // Fix for invalid time value
+  const postDate = postTime ? new Date(postTime) : null;
+  const isValidDate = postDate instanceof Date && !isNaN(postDate);
+
   return (
-    <div className="bg-base-200 p-4 sm:p-5 rounded-lg shadow-md space-y-3 sm:space-y-4 font-urbanist
-                    max-w-full
-                    sm:max-w-md
-                    md:max-w-lg
-                    lg:max-w-xl
-                    mx-auto"
+    <article
+      className="bg-base-200 rounded-xl shadow-md p-5 flex flex-col justify-between
+        hover:shadow-xl transition-shadow duration-300 ease-in-out cursor-pointer
+        w-full h-full font-urbanist"
+      tabIndex={0}
+      aria-label={`Post titled ${postTitle}`}
     >
-      {/* Author */}
-      <div className="flex items-center gap-3">
-        <img
-          src={authorImage}
-          alt={authorName}
-          className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-primary object-cover"
-        />
-        <div>
-          <h4 className="font-semibold text-base-content text-sm sm:text-base">{authorName}</h4>
-          <span className="text-xs sm:text-sm text-base-content/70">{tag}</span>
+      {/* Top Row: Author Image + Tag */}
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-3">
+          <img
+            src={authorImage}
+            alt={`Author of ${postTitle}`}
+            className="w-12 h-12 rounded-full border border-primary object-cover"
+            loading="lazy"
+          />
+          <span className="text-sm font-semibold text-primary">{tag}</span>
         </div>
       </div>
 
-      {/* Title & Description */}
-      <h2 className="text-lg sm:text-xl font-bold text-base-content leading-tight">{postTitle}</h2>
-      <p className="text-sm sm:text-base text-base-content/80 leading-relaxed">{postDescription}</p>
+      {/* Post Title */}
+      <h2 className="text-xl font-bold text-base-content mb-4 leading-snug">
+        {postTitle}
+      </h2>
 
-      {/* Stats + Actions */}
-      <PostActions post={post} />
-    </div>
+      {/* Votes & Time Row */}
+      <div className="flex justify-between items-center mb-4 text-base-content/80 text-sm">
+        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-1">
+            <FaRegThumbsUp /> {upVote}
+          </div>
+          <div className="flex items-center gap-1">
+            <FaRegThumbsDown /> {downVote}
+          </div>
+        </div>
+        <time
+          dateTime={isValidDate ? postDate.toISOString() : undefined}
+          title={isValidDate ? postDate.toLocaleString() : "Unknown time"}
+          className="italic"
+        >
+          🕒 {isValidDate ? `${postDate.toLocaleDateString()} ${postDate.toLocaleTimeString()}` : "Unknown time"}
+        </time>
+      </div>
+
+      {/* View Details Button */}
+      <Link
+        to={`/post/${_id}`}
+        className="btn btn-sm border border-primary text-primary hover:bg-primary hover:text-primary-content self-start"
+      >
+        View Details
+      </Link>
+    </article>
   );
 };
 
-export default PostCard;
+export default PostsCard;

@@ -28,7 +28,6 @@ const Posts = () => {
   const { posts, totalPosts } = data;
   const totalPages = Math.ceil(totalPosts / limit);
 
-  // Animation variants for the posts grid
   const gridVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 },
@@ -58,10 +57,12 @@ const Posts = () => {
           animate="visible"
           exit="exit"
           transition={{ duration: 0.3 }}
-          className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-8 mb-10"
+          className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-6 md:gap-8 mb-10"
         >
           {posts.map((post) => (
-            <PostCard key={post._id} post={post} />
+            <div key={post._id} className="w-full h-full flex">
+              <PostCard post={post} />
+            </div>
           ))}
         </motion.div>
       </AnimatePresence>

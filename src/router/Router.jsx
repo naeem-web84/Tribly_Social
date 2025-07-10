@@ -3,20 +3,9 @@ import MainLayouts from "../Layouts/MainLayouts/MainLayouts";
 import Login from "../Authentication/Login/Login";
 import Register from "../Authentication/Register/Register";
 import Home from "../pages/Home/Home";
-// import UserDashboardLayout from "../Layouts/UserDashboardLayout/UserDashboardLayout";
-// import MyProfile from "../pages/UserDashboard/MyProfile/MyProfile";
-// import AddPost from "../pages/UserDashboard/AddPost/AddPost";
-// import MyPosts from "../pages/UserDashboard/MyPosts/MyPosts";
-// import PrivateRoutes from "../routes/PrivateRoutes";
+import PostsDetails from "../pages/Posts/PostsDetails"; 
 
 
-
-// Admin Dashboard imports
-// import AdminDashboardLayout from "../Layouts/AdminDashboardLayout/AdminDashboardLayout";
-// import AdminProfile from "../pages/AdminDashboard/AdminProfile";
-// import ManageUsers from "../pages/AdminDashboard/ManageUsers";
-// import ReportedComments from "../pages/AdminDashboard/ReportedComments";
-// import MakeAnnouncement from "../pages/AdminDashboard/MakeAnnouncement";
 
 export const router = createBrowserRouter([
   {
@@ -35,29 +24,17 @@ export const router = createBrowserRouter([
         path: "/register",
         element: <Register />,
       },
+      {
+        path: "/post/:id",
+        element: <PostsDetails></PostsDetails>
+      },
     ],
   },
 
-  // {
-  //   path: "/dashboard/user",
-  //   element: <PrivateRoutes>
-  //     <UserDashboardLayout></UserDashboardLayout>
-  //   </PrivateRoutes>,
-  //   children: [
-  //     {
-  //       index: true,
-  //       element: <MyProfile />,
-  //     },
-  //     {
-  //       path: "add-post",
-  //       element: <AddPost />,
-  //     },
-  //     {
-  //       path: "my-posts",
-  //       element: <MyPosts />,
-  //     },
-  //   ],
-  // },
+  {
+    path: "/user",
+
+  },
 
   // {
   //   path: "/admin",

@@ -1,8 +1,8 @@
 // SocialLogin.jsx
-import React from 'react';
-import useAuth from '../../hooks/UseAuth/UseAuth';
+import React from 'react'; 
 import useAxios from '../../hooks/useAxiosSecure/useAxios';
 import { useNavigate } from 'react-router';
+import useAuth from '../../hooks/useAuth/useAuth';
 
 const SocialLogin = ({ setLoading }) => {
   const { signInWithGoogle } = useAuth();
