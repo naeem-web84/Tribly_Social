@@ -31,7 +31,7 @@ const Navbar = () => {
   ];
 
   return (
-    <div className="navbar sticky top-0 z-50 bg-base-100 text-base-content shadow-md font-urbanist">
+    <div className="navbar sticky top-0 z-50 bg-secondary text-base-content shadow-md font-urbanist">
       <div className="w-full max-w-6xl mx-auto px-4 flex items-center justify-between gap-4">
         {/* Logo */}
         <Link to="/" className="text-xl font-bold flex items-center gap-2 text-base-content">

@@ -13,15 +13,17 @@
   default: true;
   color-scheme: light;
 
-  --color-primary: #087ddc;              /* Steel Blue -  primary color used for buttons, links, highlights */ 
+  --color-primary: #087ddc;
+  /* Steel Blue - primary actions like buttons */
+  --color-primary-content: #ffffff;
+  /* White text on primary buttons */
 
-  --color-primary-content: #FFFFFF;
-
-   --color-secondary: #FFFFFF;              /* White - base background color for page or containers */ 
-
-  --color-secondary-content: #1f2d35;            /*  Gray - secondary color, can be used for backgrounds, accents */
- 
+  --color-secondary: #f4f7f9;
+  /* Light Gray - clean, soft background */
+  --color-secondary-content: #1f2d35;
+  /* Dark Gray - readable text on light backgrounds */
 }
+
 
 /* Dark theme */
 @plugin "daisyui/theme" {
@@ -29,16 +31,19 @@
   prefersdark: true;
   color-scheme: dark;
 
-  --color-primary: #FF6934;              /* Soft Orange - primary color used for buttons, links, highlights */ 
+  --color-primary: #FF6934;
+  /* Soft Orange - primary color used for buttons, links, highlights */
 
   --color-primary-content: #FFFFFF;
 
-  --color-secondary: #262D34;            /* Charcoal Gray - secondary color, used for backgrounds, accents */
-  
-  --color-secondary-content: #FFFFFF;      /* White - text color on primary backgrounds (e.g., button text) */
+  --color-secondary: #262D34;
+  /* Charcoal Gray - secondary color, used for backgrounds, accents */
 
-  
- 
+  --color-secondary-content: #FFFFFF;
+  /* White - text color on primary backgrounds (e.g., button text) */
+
+
+
 }
 
 /* Font */
