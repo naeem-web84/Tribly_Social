@@ -1,7 +1,7 @@
 import { Link, NavLink } from "react-router";
 import { useEffect, useState } from "react";
 import { FaBell } from "react-icons/fa";
-import useAuth from "../../hooks/useAuth/useAuth"; 
+import useAuth from "../../hooks/useAuth/useAuth";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import ThemeToggle from "../../components/ThemeToggle/ThemeToggle";
 
@@ -34,15 +34,12 @@ const Navbar = () => {
     <div className="navbar sticky top-0 z-50 bg-base-100 text-base-content shadow-md font-urbanist">
       <div className="w-full max-w-6xl mx-auto px-4 flex items-center justify-between gap-4">
         {/* Logo */}
-        <Link
-          to="/"
-          className="text-xl font-bold flex items-center gap-2 text-base-content"
-        >
+        <Link to="/" className="text-xl font-bold flex items-center gap-2 text-base-content">
           <img src="/logo.svg" alt="Tribly logo" className="w-6 h-6" />
           Tribly
         </Link>
 
-        {/* Navigation links (hidden on mobile) */}
+        {/* Nav Links */}
         <div className="hidden lg:flex gap-2">
           {navLinks.map((link) => (
             <NavLink
@@ -61,20 +58,14 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* Right controls: notifications, user, theme toggle */}
+        {/* Right Side */}
         <div className="flex items-center gap-3 relative">
-          {/* Notification Button */}
-          <CustomButton
-            className="btn-ghost btn-sm text-primary p-2"
-            aria-label="Notifications"
-            onClick={() => {
-              /* Add notification click logic if needed */
-            }}
-          >
+          {/* Notification */}
+          <CustomButton className="btn-ghost btn-sm text-primary p-2" aria-label="Notifications">
             <FaBell size={18} />
           </CustomButton>
 
-          {/* User Section */}
+          {/* User Profile */}
           {user ? (
             <div className="relative dropdown-wrapper">
               <img
@@ -85,7 +76,7 @@ const Navbar = () => {
               />
               {dropdownOpen && (
                 <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg z-50 p-3 bg-base-100 text-base-content">
-                  <div className="px-2 py-1 text-sm font-semibold border-b border-gray-300 truncate">
+                  <div className="px-2 py-1 text-sm font-semibold border-b truncate">
                     {user.displayName || user.email}
                   </div>
                   <Link
@@ -96,7 +87,7 @@ const Navbar = () => {
                   </Link>
                   <CustomButton
                     type="button"
-                    className="w-full text-left text-sm"
+                    className="w-full text-left text-sm mt-1"
                     onClick={handleLogout}
                   >
                     Logout
@@ -106,13 +97,13 @@ const Navbar = () => {
             </div>
           ) : (
             <Link to="/login">
-              <CustomButton className="btn-sm border border-primary text-primary">
+              <CustomButton className="btn-sm border border-primary text-primary hover:bg-primary hover:text-primary-content">
                 Join Us
               </CustomButton>
             </Link>
           )}
 
-          {/* Theme toggle */}
+          {/* Theme Toggle */}
           <ThemeToggle />
         </div>
       </div>

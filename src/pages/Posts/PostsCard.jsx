@@ -1,4 +1,5 @@
 import React from "react";
+import PostActions from "./PostActions";
 
 const PostCard = ({ post }) => {
   const {
@@ -7,63 +8,35 @@ const PostCard = ({ post }) => {
     postTitle,
     postDescription,
     tag,
-    upVote,
-    downVote,
-    createdAt,
   } = post;
 
-  // Format date or fallback
-  const timeAgo = createdAt
-    ? new Date(createdAt).toLocaleDateString(undefined, {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-      })
-    : "Just now";
-
   return (
-    <div className="bg-base-100 border border-base-200 shadow-lg rounded-2xl p-6 transition-all hover:shadow-xl font-urbanist flex flex-col justify-between">
-      {/* Author and time */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-3">
-          <img
-            src={authorImage}
-            alt={authorName}
-            className="w-12 h-12 rounded-full object-cover"
-          />
-          <div>
-            <p className="font-semibold text-base-content">{authorName}</p>
-            <p className="text-xs text-base-content/70">#{tag}</p>
-          </div>
-        </div>
-        <time className="text-xs text-base-content/50">{timeAgo}</time>
-      </div>
-
-      {/* Title */}
-      <h2 className="text-lg font-bold text-primary mb-2">{postTitle}</h2>
-
-      {/* Description */}
-      <p className="text-base-content text-sm mb-6 line-clamp-3">
-        {postDescription}
-      </p>
-
-      {/* Comments & Votes */}
-      <div className="flex justify-between text-sm text-base-content/70">
-        <div className="flex items-center gap-2">
-          <span className="font-semibold">Comments:</span>
-          <span>{upVote}</span>
-        </div>
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1 text-green-600">
-            <span>▲</span>
-            <span>{upVote}</span>
-          </div>
-          <div className="flex items-center gap-1 text-red-500">
-            <span>▼</span>
-            <span>{downVote}</span>
-          </div>
+    <div className="bg-base-200 p-4 sm:p-5 rounded-lg shadow-md space-y-3 sm:space-y-4 font-urbanist
+                    max-w-full
+                    sm:max-w-md
+                    md:max-w-lg
+                    lg:max-w-xl
+                    mx-auto"
+    >
+      {/* Author */}
+      <div className="flex items-center gap-3">
+        <img
+          src={authorImage}
+          alt={authorName}
+          className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-primary object-cover"
+        />
+        <div>
+          <h4 className="font-semibold text-base-content text-sm sm:text-base">{authorName}</h4>
+          <span className="text-xs sm:text-sm text-base-content/70">{tag}</span>
         </div>
       </div>
+
+      {/* Title & Description */}
+      <h2 className="text-lg sm:text-xl font-bold text-base-content leading-tight">{postTitle}</h2>
+      <p className="text-sm sm:text-base text-base-content/80 leading-relaxed">{postDescription}</p>
+
+      {/* Stats + Actions */}
+      <PostActions post={post} />
     </div>
   );
 };

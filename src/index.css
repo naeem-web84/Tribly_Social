@@ -13,11 +13,14 @@
   default: true;
   color-scheme: light;
 
-  --color-primary: #4682B4;              /* Steel Blue - primary color used for buttons, links, highlights */
-  --color-primary-content: #263640;      /* White - text color on primary backgrounds (e.g., button text) */ 
-  --color-secondary: #263640;            /* Dark Blue Gray - secondary color, can be used for backgrounds, accents */
-  --color-base-100: #ffffff;              /* White - base background color for page or containers */
-  --color-base-content: #262D34;          /* Dark Blue Gray - main text color on base backgrounds */
+  --color-primary: #087ddc;              /* Steel Blue -  primary color used for buttons, links, highlights */ 
+
+  --color-primary-content: #FFFFFF;
+
+   --color-secondary: #FFFFFF;              /* White - base background color for page or containers */ 
+
+  --color-secondary-content: #1f2d35;            /*  Gray - secondary color, can be used for backgrounds, accents */
+ 
 }
 
 /* Dark theme */
@@ -27,13 +30,15 @@
   color-scheme: dark;
 
   --color-primary: #FF6934;              /* Soft Orange - primary color used for buttons, links, highlights */ 
-  
-  /* Soft Orange - primary color used for buttons, links, highlights */
-  --color-primary-content: #FFFFFF;      /* White - text color on primary backgrounds (e.g., button text) */
+
+  --color-primary-content: #FFFFFF;
 
   --color-secondary: #262D34;            /* Charcoal Gray - secondary color, used for backgrounds, accents */
-  --color-base-100: #262D34;             /* Charcoal Gray - base background color for page or containers */
-  --color-base-content: #ef4444;        /* White - main text color on base backgrounds */
+  
+  --color-secondary-content: #FFFFFF;      /* White - text color on primary backgrounds (e.g., button text) */
+
+  
+ 
 }
 
 /* Font */
