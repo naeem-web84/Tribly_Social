@@ -1,32 +1,30 @@
-import { useNavigate } from "react-router";
-import { useState } from "react"; 
-import useAxiosSecure from "../../hooks/useAxiosSecure/useAxiosSecure";
+import { useNavigate, useLocation } from "react-router";
+import { useState } from "react";
+import useAuth from "../../hooks/useAuth/useAuth";
+import RegisterForm from "./RegisterForm";
 import SocialLogin from "../SocialLogin/SocialLogin";
-import RegisterForm from "./RegisterForm";  
 import Loading from "../../components/loading/Loading";
-import useAuth from "../../hooks/UseAuth/UseAuth";
+import useSaveUser from "../../pages/Posts/useSaveUser";
 
 const Register = () => {
   const { createUser } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const axiosSecure = useAxiosSecure();
   const image_api_key = import.meta.env.VITE_IMAGE_API_KEY;
+  const { mutateAsync: saveUser } = useSaveUser();
 
   const onSubmit = async (data) => {
     const { name, email, password, about, terms } = data;
     const imageFile = data.image[0];
 
-    if (!terms) {
-      setError("You must accept the terms and conditions.");
-      return;
-    }
+    if (!terms) return setError("✔️ Please accept terms and conditions.");
 
     try {
       setLoading(true);
 
-      // 1. Upload image to imgbb
+      // Upload image to imgbb
       const formData = new FormData();
       formData.append("image", imageFile);
 
@@ -40,33 +38,28 @@ const Register = () => {
 
       const photoURL = imgData.data.url;
 
-      // 2. Create user with Firebase
-      const result = await createUser(email, password);
-      console.log("User created:", result.user);
+      // Create user with email/password
+      await createUser(email, password);
 
-      // 3. Save user info in DB
+      // Prepare user info to save in DB
       const userInfo = {
         userName: name,
         email,
         about,
-        role: "user",              // default role user
+        role: "user",
         membershipStatus: "general",
+        badge: "user",
+        follower: 0,
+        bannerImage: "https://i.ibb.co/GtQbcq9/banner.jpg",
         photo: photoURL,
         created_at: new Date().toISOString(),
         last_log_in: new Date().toISOString(),
       };
 
-      const dbRes = await axiosSecure.post("/users", userInfo);
-      console.log("User saved:", dbRes.data);
+      await saveUser(userInfo);
 
-      // 4. Redirect based on role
-      // if (userInfo.role === "admin") {
-      //   navigate("/admin");
-      // } else {
-      //   navigate("/dashboard");
-      // }
-
-      navigate('/')
+      // Redirect fix:
+      navigate("/", { replace: true }); // ✅ always to home
     } catch (err) {
       console.error("Registration failed:", err);
       setError(err.message);
@@ -75,13 +68,13 @@ const Register = () => {
     }
   };
 
-  if (loading) return <Loading></Loading>;
+  if (loading) return <Loading />;
 
   return (
     <div className="hero min-h-screen bg-base-200">
-      <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+      <div className="card w-full max-w-sm shadow-2xl bg-secondary text-secondary-content">
         <RegisterForm onSubmit={onSubmit} error={error} />
-        <SocialLogin />
+        <SocialLogin from={from} setLoading={setLoading} />
       </div>
     </div>
   );

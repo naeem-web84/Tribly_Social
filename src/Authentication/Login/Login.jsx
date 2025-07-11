@@ -1,17 +1,17 @@
-// Login.jsx
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router';
-import useAuth from '../../hooks/UseAuth/UseAuth';
-import SocialLogin from '../SocialLogin/SocialLogin';
-import Loading from '../../components/loading/Loading';
+import { useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router";
+import useAuth from "../../hooks/useAuth/useAuth";
+import SocialLogin from "../SocialLogin/SocialLogin";
+import Loading from "../../components/loading/Loading";
 
 const Login = () => {
   const { signIn } = useAuth();
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false); // ✅ shared loading state
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleLogin = e => {
+  const handleLogin = (e) => {
     e.preventDefault();
     setLoading(true);
     const form = e.target;
@@ -21,44 +21,53 @@ const Login = () => {
     signIn(email, password)
       .then(() => {
         form.reset();
-        navigate('/');
+        // Redirect fix:
+        navigate('/')
       })
-      .catch(err => {
+      .catch((err) => {
         setError(err.message);
       })
       .finally(() => setLoading(false));
   };
 
-  if (loading) return <Loading />; // ✅ now full screen
+  if (loading) return <Loading />;
 
   return (
     <div className="hero min-h-screen bg-base-200">
-      <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-        <form onSubmit={handleLogin} className="card-body">
-          <h2 className="text-center text-2xl font-bold">Login</h2>
+      <div className="card w-full max-w-sm shadow-2xl bg-secondary text-secondary-content">
+        <form onSubmit={handleLogin} className="card-body flex flex-col gap-4">
+          <h2 className="text-center text-2xl font-bold mb-4">Login</h2>
 
-          <div className="form-control">
-            <label className="label"><span className="label-text">Email</span></label>
-            <input name="email" type="email" className="input input-bordered" required />
-          </div>
-
-          <div className="form-control">
-            <label className="label"><span className="label-text">Password</span></label>
-            <input name="password" type="password" className="input input-bordered" required />
-          </div>
+          <input
+            name="email"
+            type="email"
+            required
+            placeholder="Email"
+            className="input input-bordered"
+          />
+          <input
+            name="password"
+            type="password"
+            required
+            placeholder="Password"
+            className="input input-bordered"
+          />
 
           {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
 
-          <div className="form-control mt-4">
-            <button className="btn btn-primary" disabled={loading}>
-              {loading ? 'Logging in...' : 'Login'}
-            </button>
-          </div>
+          <button className="btn btn-primary mt-2" disabled={loading}>
+            {loading ? "Logging in..." : "Login"}
+          </button>
 
-          <p><small>New here? <Link className="btn btn-link -ml-3" to="/register">Register</Link></small></p>
+          <p className="mt-4 text-sm text-center">
+            New?{" "}
+            <Link to="/register" className="link">
+              Register
+            </Link>
+          </p>
         </form>
 
-        <SocialLogin setLoading={setLoading} /> {/* ✅ pass loader control */}
+        <SocialLogin setLoading={setLoading} />
       </div>
     </div>
   );

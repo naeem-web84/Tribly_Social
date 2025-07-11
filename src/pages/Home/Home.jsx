@@ -1,14 +1,14 @@
-import React from "react";  
+import React from "react";
 import Posts from "../Posts/Posts";
 import SearchBanner from "../SearchBanner/SearchBanner";
 import TagBoard from "../TagBoard/TagBoard";
 
 const Home = () => {
   return (
-    <div> 
+    <div>
       <SearchBanner></SearchBanner>
       <TagBoard></TagBoard>
-    <Posts></Posts>
+      <Posts></Posts>
     </div>
   );
 };

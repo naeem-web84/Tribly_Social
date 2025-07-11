@@ -1,11 +1,30 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { NavLink, Outlet } from "react-router";
-import { FaUserCircle, FaPlusCircle, FaListAlt } from "react-icons/fa";
+import { FaUserCircle, FaPlusCircle, FaListAlt, FaSun, FaMoon } from "react-icons/fa";
 
 const User = () => {
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+  const drawerRef = useRef(null);
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light");
+  };
+
+  const handleLinkClick = () => {
+    // Auto close drawer only on small screens
+    if (window.innerWidth < 1024 && drawerRef.current) {
+      drawerRef.current.checked = false;
+    }
+  };
+
   return (
     <div className="drawer lg:drawer-open h-screen font-urbanist bg-secondary text-secondary-content">
-      <input id="user-drawer" type="checkbox" className="drawer-toggle" />
+      <input id="user-drawer" type="checkbox" className="drawer-toggle" ref={drawerRef} />
 
       {/* Right side content */}
       <div className="drawer-content flex flex-col">
@@ -32,7 +51,7 @@ const User = () => {
               </svg>
             </label>
           </div>
-          <div className="mx-2 flex-1 px-2 font-semibold">User Dashboard</div>
+          <div className="mx-2 flex-1 px-2 font-semibold">User Menu</div>
         </div>
 
         {/* Page content area */}
@@ -45,11 +64,22 @@ const User = () => {
       <div className="drawer-side">
         <label htmlFor="user-drawer" className="drawer-overlay"></label>
         <ul className="menu bg-primary text-primary-content min-h-full w-64 p-4 space-y-2">
-          <h2 className="text-lg font-bold mb-4">User Menu</h2>
+          {/* Sidebar header with icon theme toggle */}
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-bold">User Menu</h2>
+            <button
+              onClick={toggleTheme}
+              className="btn btn-sm bg-secondary btn-ghost text-secondary-content"
+              title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+            >
+              {theme === "light" ? <FaMoon size={18} /> : <FaSun size={18} />}
+            </button>
+          </div>
 
           <li>
             <NavLink
               to="myProfile"
+              onClick={handleLinkClick}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3 py-2 rounded ${
                   isActive
@@ -66,6 +96,7 @@ const User = () => {
           <li>
             <NavLink
               to="addPosts"
+              onClick={handleLinkClick}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3 py-2 rounded ${
                   isActive
@@ -82,6 +113,7 @@ const User = () => {
           <li>
             <NavLink
               to="myPosts"
+              onClick={handleLinkClick}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3 py-2 rounded ${
                   isActive
