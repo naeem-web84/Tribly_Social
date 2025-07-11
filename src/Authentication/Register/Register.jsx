@@ -1,4 +1,4 @@
-import { useNavigate, useLocation } from "react-router";
+import { useNavigate } from "react-router";
 import { useState } from "react";
 import useAuth from "../../hooks/useAuth/useAuth";
 import RegisterForm from "./RegisterForm";
@@ -9,7 +9,6 @@ import useSaveUser from "../../pages/Posts/useSaveUser";
 const Register = () => {
   const { createUser } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const image_api_key = import.meta.env.VITE_IMAGE_API_KEY;
@@ -41,7 +40,7 @@ const Register = () => {
       // Create user with email/password
       await createUser(email, password);
 
-      // Prepare user info to save in DB
+      // Save user info in DB
       const userInfo = {
         userName: name,
         email,
@@ -50,7 +49,7 @@ const Register = () => {
         membershipStatus: "general",
         badge: "user",
         follower: 0,
-        bannerImage: "https://i.ibb.co/GtQbcq9/banner.jpg",
+        bannerImage: "https://i.ibb.co/3mN6Wj7w/tribly-auto-banner.png",
         photo: photoURL,
         created_at: new Date().toISOString(),
         last_log_in: new Date().toISOString(),
@@ -58,8 +57,8 @@ const Register = () => {
 
       await saveUser(userInfo);
 
-      // Redirect fix:
-      navigate("/", { replace: true }); // ✅ always to home
+      // Always go to home
+      navigate("/", { replace: true });
     } catch (err) {
       console.error("Registration failed:", err);
       setError(err.message);
@@ -74,7 +73,7 @@ const Register = () => {
     <div className="hero min-h-screen bg-base-200">
       <div className="card w-full max-w-sm shadow-2xl bg-secondary text-secondary-content">
         <RegisterForm onSubmit={onSubmit} error={error} />
-        <SocialLogin from={from} setLoading={setLoading} />
+        <SocialLogin setLoading={setLoading} /> {/* ✅ Removed from={from} */}
       </div>
     </div>
   );

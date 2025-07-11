@@ -1,6 +1,5 @@
-// hooks/useAxiosSecure/useAxiosSecure.jsx
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useAuth from "../useAuth/useAuth";
 
 const axiosSecure = axios.create({
@@ -9,29 +8,25 @@ const axiosSecure = axios.create({
 
 const useAxiosSecure = () => {
   const { user } = useAuth();
-  const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const setInterceptor = async () => {
-      if (user) {
-        const token = await user.getIdToken();
+    const requestInterceptor = axiosSecure.interceptors.request.use(
+      async (config) => {
+        if (user) {
+          const token = await user.getIdToken();
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+      },
+      (error) => Promise.reject(error)
+    );
 
-        axiosSecure.interceptors.request.use(
-          (config) => {
-            config.headers.Authorization = `Bearer ${token}`;
-            return config;
-          },
-          (error) => Promise.reject(error)
-        );
-
-        setReady(true); // ✅ we're now ready to make requests
-      }
+    return () => {
+      axiosSecure.interceptors.request.eject(requestInterceptor);
     };
-
-    setInterceptor();
   }, [user]);
 
-  return ready ? axiosSecure : null; // Return null if not ready
+  return axiosSecure;
 };
 
 export default useAxiosSecure;

@@ -22,7 +22,7 @@ const SocialLogin = ({ setLoading }) => {
         membershipStatus: "general",
         badge: "user",
         follower: 0,
-        bannerImage: "https://i.ibb.co/GtQbcq9/banner.jpg", // default banner
+        bannerImage: "https://i.ibb.co/3mN6Wj7w/tribly-auto-banner.png", // default banner
         photo: user.photoURL,
         created_at: new Date().toISOString(),
         last_log_in: new Date().toISOString(),
