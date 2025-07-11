@@ -1,11 +1,11 @@
 // SocialLogin.jsx
-import React from 'react'; 
+import React from 'react';
 import useAxios from '../../hooks/useAxiosSecure/useAxios';
 import { useNavigate } from 'react-router';
 import useAuth from '../../hooks/useAuth/useAuth';
 
-const SocialLogin = ({ setLoading }) => {
-  const { signInWithGoogle } = useAuth();
+const SocialLogin = () => {
+  const { signInWithGoogle, setLoading } = useAuth();
   const axiosInstance = useAxios();
   const navigate = useNavigate();
 
@@ -14,6 +14,8 @@ const SocialLogin = ({ setLoading }) => {
     signInWithGoogle()
       .then(async (result) => {
         const user = result.user;
+
+        console.log('user from the social login', user);
 
         const userInfo = {
           userName: user.displayName,

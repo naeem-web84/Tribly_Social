@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import useAxios from "../../hooks/useAxiosSecure/useAxios";
 import useAuth from "../../hooks/useAuth/useAuth";
 import {
   FaRegThumbsUp,
@@ -12,11 +11,12 @@ import {
 } from "react-icons/fa";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import useAxiosSecure from "../../hooks/useAxiosSecure/useAxiosSecure";
 
 const MySwal = withReactContent(Swal);
 
 const PostActions = ({ post }) => {
-  const axios = useAxios();
+  const axios = useAxiosSecure();
   const { user } = useAuth();
   const [commentCount, setCommentCount] = useState(0);
   const [up, setUp] = useState(post.upVote);
@@ -27,6 +27,8 @@ const PostActions = ({ post }) => {
   const { postTitle, _id, voters = [] } = post;
 
   useEffect(() => {
+    if (!axios) return; // wait for axios to be ready
+
     axios.get(`/comments/count/${postTitle}`).then((res) => {
       setCommentCount(res.data.count || 0);
     });
@@ -40,6 +42,7 @@ const PostActions = ({ post }) => {
   // Vote Handler
   const handleVote = async (type) => {
     if (!user) return Swal.fire("⚠️ Please log in to vote", "", "warning");
+    if (!axios) return; // wait for axios to be ready
     if (loading) return;
 
     try {
@@ -70,6 +73,7 @@ const PostActions = ({ post }) => {
   // Add comment
   const handleAddComment = async () => {
     if (!user) return Swal.fire("⚠️ Please login to add a comment", "", "warning");
+    if (!axios) return;
 
     const { value: text } = await MySwal.fire({
       title: `✍️ Add Comment to "${postTitle}"`,
@@ -98,34 +102,40 @@ const PostActions = ({ post }) => {
 
   // Show all comments
   const handleShowComments = async () => {
-    const res = await axios.get(`/comments/${postTitle}`);
-    const comments = res.data;
+    if (!axios) return;
 
-    MySwal.fire({
-      title: `💬 Comments on "${postTitle}"`,
-      html: (
-        <div className="text-left max-h-[300px] overflow-y-auto">
-          {comments.length === 0 ? (
-            <p>No comments yet.</p>
-          ) : (
-            comments.map((c, i) => (
-              <div key={i} className="p-3 border-b mb-2 rounded bg-base-200">
-                <p>{c.comment}</p>
-                <div className="flex items-center gap-2 text-xs text-base-content/60">
-                  <FaUser /> {c.user} <FaTag /> {c.postTitle}
+    try {
+      const res = await axios.get(`/comments/${postTitle}`);
+      const comments = res.data;
+
+      MySwal.fire({
+        title: `💬 Comments on "${postTitle}"`,
+        html: (
+          <div className="text-left max-h-[300px] overflow-y-auto">
+            {comments.length === 0 ? (
+              <p>No comments yet.</p>
+            ) : (
+              comments.map((c, i) => (
+                <div key={i} className="p-3 border-b mb-2 rounded bg-base-200">
+                  <p>{c.comment}</p>
+                  <div className="flex items-center gap-2 text-xs text-base-content/60">
+                    <FaUser /> {c.user} <FaTag /> {c.postTitle}
+                  </div>
                 </div>
-              </div>
-            ))
-          )}
-        </div>
-      ),
-      showCloseButton: true,
-      showConfirmButton: false,
-      width: 500,
-      background: "var(--color-base-100)",
-      color: "var(--color-base-content)",
-      customClass: { popup: "font-urbanist" },
-    });
+              ))
+            )}
+          </div>
+        ),
+        showCloseButton: true,
+        showConfirmButton: false,
+        width: 500,
+        background: "var(--color-base-100)",
+        color: "var(--color-base-content)",
+        customClass: { popup: "font-urbanist" },
+      });
+    } catch {
+      Swal.fire("❌ Failed to load comments", "", "error");
+    }
   };
 
   return (

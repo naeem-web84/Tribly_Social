@@ -1,28 +1,30 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router";
-import useAxios from "../../hooks/useAxiosSecure/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import PostActions from "../Posts/PostActions";
 import Loading from "../../components/loading/Loading";
-import {
-  FacebookShareButton,
-  FacebookIcon,
-} from "react-share";
+import { FacebookShareButton, FacebookIcon } from "react-share";
+import useAxiosSecure from "../../hooks/useAxiosSecure/useAxiosSecure";
 
 const PostsDetails = () => {
-  const { id } = useParams();
-  const axios = useAxios();
+  const { id } = useParams(); // post ID from URL
+  const axios = useAxiosSecure(); // returns null initially until token is ready
   const navigate = useNavigate();
 
+  // ✅ Wait until axios is ready before running query
   const { data: post, isLoading, error } = useQuery({
     queryKey: ["post", id],
     queryFn: async () => {
       const res = await axios.get(`/posts/${id}`);
       return res.data;
     },
+    enabled: !!axios && !!id, // ✅ don't run query until axios is ready
   });
 
-  if (isLoading) return <Loading />;
+  // ✅ Show loading while axios is being initialized
+  if (!axios || isLoading) return <Loading />;
+
+  // ✅ Handle errors
   if (error) return <div className="text-center py-10">Error loading post</div>;
   if (!post) return <div className="text-center py-10">Post not found</div>;
 
@@ -52,7 +54,9 @@ const PostsDetails = () => {
         </div>
 
         {/* Title */}
-        <h1 className="text-3xl font-bold text-base-content leading-tight">{postTitle}</h1>
+        <h1 className="text-3xl font-bold text-base-content leading-tight">
+          {postTitle}
+        </h1>
 
         {/* Description */}
         <p className="text-base text-base-content/80 leading-relaxed whitespace-pre-wrap">
@@ -60,7 +64,9 @@ const PostsDetails = () => {
         </p>
 
         {/* Post time */}
-        <p className="text-sm text-base-content/60 italic">🕒 {new Date(postTime).toLocaleString()}</p>
+        <p className="text-sm text-base-content/60 italic">
+          🕒 {new Date(postTime).toLocaleString()}
+        </p>
 
         {/* Actions */}
         <PostActions post={post} />

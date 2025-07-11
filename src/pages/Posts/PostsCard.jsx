@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
-import {
-  FaRegThumbsUp,
-  FaRegThumbsDown,
-} from "react-icons/fa";
-import useAxios from "../../hooks/useAxiosSecure/useAxios";
+import { FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa";
+import useAxiosSecure from "../../hooks/useAxiosSecure/useAxiosSecure";
 
 const PostsCard = ({ post }) => {
   const {
@@ -17,17 +14,21 @@ const PostsCard = ({ post }) => {
     downVote,
   } = post;
 
-  const axios = useAxios();
+  const axios = useAxiosSecure();
   const [commentCount, setCommentCount] = useState(0);
 
   useEffect(() => {
-    // Fetch comment count by postTitle
-    axios.get(`/comments/count/${postTitle}`).then(res => {
-      setCommentCount(res.data.count || 0);
-    });
+    if (!axios) return; // Guard here
+
+    axios.get(`/comments/count/${postTitle}`)
+      .then(res => {
+        setCommentCount(res.data.count || 0);
+      })
+      .catch(err => {
+        console.error("Failed to fetch comment count", err);
+      });
   }, [axios, postTitle]);
 
-  // Fix for invalid time value
   const postDate = postTime ? new Date(postTime) : null;
   const isValidDate = postDate instanceof Date && !isNaN(postDate);
 
@@ -39,7 +40,6 @@ const PostsCard = ({ post }) => {
       tabIndex={0}
       aria-label={`Post titled ${postTitle}`}
     >
-      {/* Top Row: Author Image + Tag */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-3">
           <img
@@ -52,12 +52,10 @@ const PostsCard = ({ post }) => {
         </div>
       </div>
 
-      {/* Post Title */}
       <h2 className="text-xl font-bold text-base-content mb-4 leading-snug">
         {postTitle}
       </h2>
 
-      {/* Votes & Time Row */}
       <div className="flex justify-between items-center mb-4 text-base-content/80 text-sm">
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-1">
@@ -65,6 +63,10 @@ const PostsCard = ({ post }) => {
           </div>
           <div className="flex items-center gap-1">
             <FaRegThumbsDown /> {downVote}
+          </div>
+          {/* You can optionally display comment count here */}
+          <div>
+            💬 {commentCount}
           </div>
         </div>
         <time
@@ -76,7 +78,6 @@ const PostsCard = ({ post }) => {
         </time>
       </div>
 
-      {/* View Details Button */}
       <Link
         to={`/post/${_id}`}
         className="btn btn-sm border border-primary text-primary hover:bg-primary hover:text-primary-content self-start"
