@@ -55,7 +55,7 @@ const User = () => {
         </div>
 
         {/* Page content area */}
-        <div className="p-6 bg-base-100 dark:bg-secondary rounded-lg shadow flex-grow overflow-auto">
+        <div className="px-2 bg-base-100 dark:bg-secondary rounded-lg shadow flex-grow overflow-auto">
           <Outlet />
         </div>
       </div>
