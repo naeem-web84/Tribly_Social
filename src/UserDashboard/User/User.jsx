@@ -23,7 +23,7 @@ const User = () => {
   };
 
   return (
-    <div className="drawer lg:drawer-open h-screen font-urbanist bg-secondary text-secondary-content">
+    <div className="drawer lg:drawer-open font-urbanist bg-secondary text-secondary-content">
       <input id="user-drawer" type="checkbox" className="drawer-toggle" ref={drawerRef} />
 
       {/* Right side content */}

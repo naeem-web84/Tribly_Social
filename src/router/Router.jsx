@@ -10,6 +10,7 @@ import AddPosts from "../UserDashboard/AddPosts/AddPosts";
 import MyPosts from "../UserDashboard/MyPosts/MyPosts";
 import PrivateRoutes from "../routes/PrivateRoutes";
 import WelcomeUser from "../UserDashboard/WelcomeUser/WelcomeUser";
+import UserUpdate from "../UserDashboard/User/UserUpdate";
 
 
 
@@ -48,6 +49,10 @@ export const router = createBrowserRouter([
       {
         path: "/user",
         element: <WelcomeUser></WelcomeUser>
+      },
+      {
+        path: "updateProfile",
+        element: <UserUpdate></UserUpdate>
       },
       {
         path: "myProfile",
