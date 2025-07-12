@@ -5,6 +5,8 @@ import useAuth from "../../hooks/useAuth/useAuth";
 import { useNavigate } from "react-router";
 import { FiEdit } from "react-icons/fi";
 import BadgeIcon from "../BadgeIcon/BadgeIcon";
+import ShowThreePosts from "../ShowThreePosts/ShowThreePosts";
+import UserInfoSection from "../UserInfoSection/UserInfoSection";
 
 const MyProfile = () => {
   const { user, loading: authLoading } = useAuth();
@@ -69,9 +71,6 @@ const MyProfile = () => {
               <BadgeIcon badge={badge} />
             </div>
 
-            {/* <p className="text-sm sm:text-base text-base-content">{email}</p> */}
-
-            {/* Edit Button */}
             <button
               onClick={() => navigate("/user/updateProfile")}
               className="mt-1 flex items-center gap-1 sm:gap-2 text-sm sm:text-base text-secondary-content hover:text-primary font-medium justify-center md:justify-start cursor-pointer"
@@ -83,37 +82,24 @@ const MyProfile = () => {
         </div>
       </div>
 
+      {/* Show Recent Posts Section */}
+      <div className="mt-6">
+        <ShowThreePosts userEmail={email} />
+      </div>
 
-      {/* Info card */}
-      <div className="mt-4 sm:mt-5 md:mt-6 p-4 sm:p-6 bg-base-100 dark:bg-secondary rounded-b-lg shadow space-y-3 text-base-content">
-        {about && (
-          <p>
-            <span className="font-semibold">About:</span> {about}
-          </p>
-        )}
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mt-3">
-          <p>
-            <span className="font-semibold">Role:</span> {role}
-          </p>
-          <p>
-            <span className="font-semibold">Badge:</span> {badge}
-          </p>
-          <p>
-            <span className="font-semibold">Membership:</span> {membershipStatus}
-          </p>
-          <p>
-            <span className="font-semibold">Followers:</span> {follower}
-          </p>
-          <p>
-            <span className="font-semibold">Joined:</span>{" "}
-            {new Date(created_at).toLocaleDateString()}
-          </p>
-          <p>
-            <span className="font-semibold">Last Login:</span>{" "}
-            {new Date(last_log_in).toLocaleString()}
-          </p>
-        </div>
+      {/* user info  */}
+      <div className="mt-6">
+        <UserInfoSection
+          userName={userName}
+          email={email}
+          role={role}
+          membershipStatus={membershipStatus}
+          badge={badge}
+          follower={follower}
+          created_at={created_at}
+          last_log_in={last_log_in}
+          about={about}
+        ></UserInfoSection>
       </div>
     </div>
   );
