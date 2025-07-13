@@ -1,6 +1,6 @@
 import { Link, NavLink } from "react-router";
 import { useEffect, useState } from "react";
-import { FaBell } from "react-icons/fa";
+import { FaBell, FaBars } from "react-icons/fa";
 import useAuth from "../../hooks/useAuth/useAuth";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import ThemeToggle from "../../components/ThemeToggle/ThemeToggle";
@@ -10,6 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 const Navbar = () => {
   const { user, logOut } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
@@ -32,6 +33,7 @@ const Navbar = () => {
     { name: "Home", path: "/" },
     { name: "Membership", path: "/membership" },
     { name: "Dashboard", path: "/user" },
+    { name: "Admin Dashboard", path: "/admin" },  
   ];
 
   const { data: mongoUser } = useQuery({
@@ -48,14 +50,14 @@ const Navbar = () => {
 
   return (
     <div className="navbar sticky top-0 z-50 bg-secondary text-base-content shadow-md font-urbanist">
-      <div className="w-full max-w-6xl mx-auto px-4 flex items-center justify-between gap-4">
+      <div className="w-full max-w-6xl mx-auto px-4 flex items-center justify-between gap-4 relative">
         {/* Logo */}
         <Link to="/" className="text-xl font-bold flex items-center gap-2 text-base-content">
           <img src="/logo.svg" alt="Tribly logo" className="w-6 h-6" />
           Tribly
         </Link>
 
-        {/* Nav Links */}
+        {/* Desktop Nav Links */}
         <div className="hidden lg:flex gap-2">
           {navLinks.map((link) => (
             <NavLink
@@ -74,14 +76,19 @@ const Navbar = () => {
           ))}
         </div>
 
+        {/* Mobile Menu Button */}
+        <div className="lg:hidden">
+          <button onClick={() => setMenuOpen(!menuOpen)} className="btn btn-sm btn-ghost text-primary">
+            <FaBars size={18} />
+          </button>
+        </div>
+
         {/* Right Side */}
         <div className="flex items-center gap-3 relative">
-          {/* Notification */}
           <CustomButton className="btn-ghost btn-sm text-primary p-2" aria-label="Notifications">
             <FaBell size={18} />
           </CustomButton>
 
-          {/* User Profile */}
           {user ? (
             <div className="relative dropdown-wrapper">
               <img
@@ -122,6 +129,28 @@ const Navbar = () => {
           {/* Theme Toggle */}
           <ThemeToggle />
         </div>
+
+        {/* Mobile Dropdown Menu */}
+        {menuOpen && (
+          <div className="absolute top-full left-0 w-full bg-base-100 shadow-md z-40 px-4 py-2 lg:hidden">
+            {navLinks.map((link) => (
+              <NavLink
+                key={link.name}
+                to={link.path}
+                onClick={() => setMenuOpen(false)}
+                className={({ isActive }) =>
+                  `block px-3 py-2 rounded-md text-sm font-semibold transition-all ${
+                    isActive
+                      ? "bg-primary text-primary-content"
+                      : "text-primary hover:bg-primary hover:text-primary-content"
+                  }`
+                }
+              >
+                {link.name}
+              </NavLink>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

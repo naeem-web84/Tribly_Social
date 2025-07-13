@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from "react-router"; // <-- changed here
+import { createBrowserRouter } from "react-router";  
 import MainLayouts from "../Layouts/MainLayouts/MainLayouts";
 import Login from "../Authentication/Login/Login";
 import Register from "../Authentication/Register/Register";
@@ -12,26 +12,24 @@ import PrivateRoutes from "../routes/PrivateRoutes";
 import WelcomeUser from "../UserDashboard/WelcomeUser/WelcomeUser";
 import UserUpdate from "../UserDashboard/User/UserUpdate";
 import CommentsPage from "../UserDashboard/CommentsPage/CommentsPage";
+import AdminLayouts from "../AdminDashboard/AdminLayouts/AdminLayouts";
+import AdminProfile from "../AdminDashboard/AdminProfile/AdminProfile";
+import ManageUser from "../AdminDashboard/ManageUser/ManageUser";
+import MakeAnnouncement from "../AdminDashboard/MakeAnnouncement/MakeAnnouncement";
+import Activitis from "../AdminDashboard/Activitis/Activitis";
+import ErrorPage from "../components/ErrorPage/ErrorPage";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayouts />,
+    errorElement: <ErrorPage />,
     children: [
+      { index: true, element: <Home /> },
+      { path: "login", element: <Login /> },
+      { path: "register", element: <Register /> },
       {
-        index: true,
-        element: <Home />,
-      },
-      {
-        path: "/login",
-        element: <Login />,
-      },
-      {
-        path: "/register",
-        element: <Register />,
-      },
-      {
-        path: "/posts/:id", // <-- fixed here: "posts" plural, NOT "post"
+        path: "posts/:id",
         element: (
           <PrivateRoutes>
             <PostsDetails />
@@ -40,7 +38,6 @@ export const router = createBrowserRouter([
       },
     ],
   },
-
   {
     path: "/user",
     element: (
@@ -48,31 +45,33 @@ export const router = createBrowserRouter([
         <User />
       </PrivateRoutes>
     ),
+    errorElement: <ErrorPage />,
     children: [
-      {
-        path: "/user",
-        element: <WelcomeUser />,
-      },
-      {
-        path: "updateProfile",
-        element: <UserUpdate />,
-      },
-      {
-        path: "myProfile",
-        element: <MyProfile />,
-      },
-      {
-        path: "comments/:postId",
-        element: <CommentsPage />,
-      },
-      {
-        path: "addPosts",
-        element: <AddPosts />,
-      },
-      {
-        path: "myPosts",
-        element: <MyPosts />,
-      },
+      { index: true, element: <WelcomeUser /> },
+      { path: "updateProfile", element: <UserUpdate /> },
+      { path: "myProfile", element: <MyProfile /> },
+      { path: "comments/:postId", element: <CommentsPage /> },
+      { path: "addPosts", element: <AddPosts /> },
+      { path: "myPosts", element: <MyPosts /> },
     ],
+  },
+  {
+    path: "/admin", // changed from /adminLayouts
+    element: (
+      <PrivateRoutes>
+        <AdminLayouts />
+      </PrivateRoutes>
+    ),
+    errorElement: <ErrorPage />,
+    children: [
+      { index: true, element: <AdminProfile /> },
+      { path: "manageUser", element: <ManageUser /> },
+      { path: "makeAnnouncement", element: <MakeAnnouncement /> },
+      { path: "activitis", element: <Activitis /> },
+    ],
+  },
+  {
+    path: "*", // catch all unknown routes
+    element: <ErrorPage />,
   },
 ]);
