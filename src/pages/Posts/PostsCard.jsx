@@ -79,7 +79,7 @@ const PostsCard = ({ post }) => {
       </div>
 
       <Link
-        to={`/post/${_id}`}
+        to={`/posts/${_id}`}
         className="btn btn-sm border border-primary text-primary hover:bg-primary hover:text-primary-content self-start"
       >
         View Details

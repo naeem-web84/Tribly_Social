@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router"; // <-- changed here
 import MainLayouts from "../Layouts/MainLayouts/MainLayouts";
 import Login from "../Authentication/Login/Login";
 import Register from "../Authentication/Register/Register";
@@ -11,8 +11,7 @@ import MyPosts from "../UserDashboard/MyPosts/MyPosts";
 import PrivateRoutes from "../routes/PrivateRoutes";
 import WelcomeUser from "../UserDashboard/WelcomeUser/WelcomeUser";
 import UserUpdate from "../UserDashboard/User/UserUpdate";
-
-
+import CommentsPage from "../UserDashboard/CommentsPage/CommentsPage";
 
 export const router = createBrowserRouter([
   {
@@ -21,7 +20,7 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Home></Home>
+        element: <Home />,
       },
       {
         path: "/login",
@@ -32,68 +31,48 @@ export const router = createBrowserRouter([
         element: <Register />,
       },
       {
-        path: "/post/:id",
-        element: <PrivateRoutes>
-          <PostsDetails></PostsDetails>
-        </PrivateRoutes>
+        path: "/posts/:id", // <-- fixed here: "posts" plural, NOT "post"
+        element: (
+          <PrivateRoutes>
+            <PostsDetails />
+          </PrivateRoutes>
+        ),
       },
     ],
   },
 
   {
     path: "/user",
-    element: <PrivateRoutes>
-      <User></User>
-    </PrivateRoutes>,
+    element: (
+      <PrivateRoutes>
+        <User />
+      </PrivateRoutes>
+    ),
     children: [
       {
         path: "/user",
-        element: <WelcomeUser></WelcomeUser>
+        element: <WelcomeUser />,
       },
       {
         path: "updateProfile",
-        element: <UserUpdate></UserUpdate>
+        element: <UserUpdate />,
       },
       {
         path: "myProfile",
-        element: <MyProfile></MyProfile>
+        element: <MyProfile />,
+      },
+      {
+        path: "comments/:postId",
+        element: <CommentsPage />,
       },
       {
         path: "addPosts",
-        element: <AddPosts></AddPosts>
+        element: <AddPosts />,
       },
       {
         path: "myPosts",
-        element: <MyPosts></MyPosts>
+        element: <MyPosts />,
       },
-    ]
-
+    ],
   },
-
-  // {
-  //   path: "/admin",
-  //   element: <AdminDashboardLayout />,
-  //   children: [
-  //     {
-  //       index: true,
-  //       element: <AdminProfile />,
-  //     },
-  //     {
-  //       path: "admin-profile",
-  //       element: <AdminProfile />,
-  //     },
-  //     {
-  //       path: "manage-users",
-  //       element: <ManageUsers />,
-  //     },
-  //     {
-  //       path: "reported-comments",
-  //       element: <ReportedComments />,
-  //     },
-  //     {
-  //       path: "make-announcement",
-  //       element: <MakeAnnouncement />,
-  //     },
-  //   ],
-  // },
 ]);

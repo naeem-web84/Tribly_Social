@@ -3,15 +3,16 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import useAuth from "../../hooks/useAuth/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure/useAxiosSecure";
 import Swal from "sweetalert2";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router"; // fixed here
 
 const MyPosts = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
   const email = user?.email;
+  const navigate = useNavigate();
 
-  // 🔍 Fetch posts created by this user
+  // Fetch posts created by this user
   const { data: posts = [], isLoading, error } = useQuery({
     queryKey: ["myPosts", email],
     queryFn: async () => {
@@ -21,7 +22,7 @@ const MyPosts = () => {
     enabled: !!email,
   });
 
-  // 🗑️ Delete post mutation
+  // Delete post mutation
   const deleteMutation = useMutation({
     mutationFn: async (id) => {
       const res = await axiosSecure.delete(`/posts/${id}`);
@@ -32,7 +33,11 @@ const MyPosts = () => {
       queryClient.invalidateQueries({ queryKey: ["myPosts", email] });
     },
     onError: (error) => {
-      Swal.fire("Error!", error.response?.data?.message || "Failed to delete post", "error");
+      Swal.fire(
+        "Error!",
+        error.response?.data?.message || "Failed to delete post",
+        "error"
+      );
     },
   });
 
@@ -50,8 +55,25 @@ const MyPosts = () => {
     });
   };
 
+  // Optional: Comment count per post
+  const CommentCount = ({ postId }) => {
+    const { data, isLoading, error } = useQuery({
+      queryKey: ["commentCount", postId],
+      queryFn: async () => {
+        const res = await axiosSecure.get(`/comments/post/${postId}`);
+        return res.data.length;
+      },
+      enabled: !!postId,
+    });
+
+    if (isLoading) return <span>...</span>;
+    if (error) return <span>0</span>;
+    return <span>{data}</span>;
+  };
+
   if (isLoading) return <p className="text-center p-4">Loading posts...</p>;
-  if (error) return <p className="text-center text-red-600">Failed to load posts</p>;
+  if (error)
+    return <p className="text-center text-red-600">Failed to load posts</p>;
 
   return (
     <div className="p-6 max-w-5xl mx-auto font-urbanist">
@@ -67,6 +89,8 @@ const MyPosts = () => {
                 <th>Post Title</th>
                 <th>Votes</th>
                 <th>Comments</th>
+                <th>View Details</th>
+                <th>Comments Page</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -77,12 +101,23 @@ const MyPosts = () => {
                   <td className="font-semibold">{post.postTitle}</td>
                   <td>{(post.upVote || 0) - (post.downVote || 0)}</td>
                   <td>
+                    <CommentCount postId={post._id} />
+                  </td>
+                  <td>
                     <Link
                       to={`/posts/${post._id}`}
                       className="btn btn-sm btn-secondary"
                     >
                       View
                     </Link>
+                  </td>
+                  <td>
+                    <button
+                      onClick={() => navigate(`/user/comments/${post._id}`)}
+                      className="btn btn-sm btn-primary"
+                    >
+                      View Comments
+                    </button>
                   </td>
                   <td>
                     <button

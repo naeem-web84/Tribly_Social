@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams, useNavigate } from "react-router";
+import { useParams, useNavigate } from "react-router"; // fixed here
 import { useQuery } from "@tanstack/react-query";
 import PostActions from "../Posts/PostActions";
 import Loading from "../../components/loading/Loading";
@@ -7,24 +7,20 @@ import { FacebookShareButton, FacebookIcon } from "react-share";
 import useAxiosSecure from "../../hooks/useAxiosSecure/useAxiosSecure";
 
 const PostsDetails = () => {
-  const { id } = useParams(); // post ID from URL
-  const axios = useAxiosSecure(); // returns null initially until token is ready
+  const { id } = useParams();
+  const axios = useAxiosSecure();
   const navigate = useNavigate();
 
-  // ✅ Wait until axios is ready before running query
   const { data: post, isLoading, error } = useQuery({
     queryKey: ["post", id],
     queryFn: async () => {
       const res = await axios.get(`/posts/${id}`);
       return res.data;
     },
-    enabled: !!axios && !!id, // ✅ don't run query until axios is ready
+    enabled: !!axios && !!id,
   });
 
-  // ✅ Show loading while axios is being initialized
   if (!axios || isLoading) return <Loading />;
-
-  // ✅ Handle errors
   if (error) return <div className="text-center py-10">Error loading post</div>;
   if (!post) return <div className="text-center py-10">Post not found</div>;
 

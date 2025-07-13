@@ -88,10 +88,18 @@ const PostActions = ({ post }) => {
     if (text) {
       try {
         await axios.post("/comments", {
+          postId: _id,
           postTitle,
           comment: text,
-          user: user.displayName || user.email || "Anonymous",
+          user: {
+            name: user.displayName || user.email || "Anonymous",
+            email: user.email || null,
+            photo: user.photoURL || null,
+          },
+          reported: false,
+          feedback: "", // or omit if optional
         });
+
         setCommentCount((prev) => prev + 1);
         Swal.fire("✅ Comment Posted!", "", "success");
       } catch {
@@ -144,11 +152,10 @@ const PostActions = ({ post }) => {
         <button
           onClick={() => handleVote("up")}
           disabled={loading}
-          className={`flex items-center gap-1 px-2 py-1 rounded transition ${
-            userVote === "up"
+          className={`flex items-center gap-1 px-2 py-1 rounded transition ${userVote === "up"
               ? "bg-green-300 text-green-900"
               : "hover:bg-base-300"
-          }`}
+            }`}
         >
           <FaRegThumbsUp /> {up}
         </button>
@@ -156,11 +163,10 @@ const PostActions = ({ post }) => {
         <button
           onClick={() => handleVote("down")}
           disabled={loading}
-          className={`flex items-center gap-1 px-2 py-1 rounded transition ${
-            userVote === "down"
+          className={`flex items-center gap-1 px-2 py-1 rounded transition ${userVote === "down"
               ? "bg-red-300 text-red-900"
               : "hover:bg-base-300"
-          }`}
+            }`}
         >
           <FaRegThumbsDown /> {down}
         </button>
