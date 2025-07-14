@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";  
+import { createBrowserRouter } from "react-router";
 import MainLayouts from "../Layouts/MainLayouts/MainLayouts";
 import Login from "../Authentication/Login/Login";
 import Register from "../Authentication/Register/Register";
@@ -15,9 +15,10 @@ import CommentsPage from "../UserDashboard/CommentsPage/CommentsPage";
 import AdminLayouts from "../AdminDashboard/AdminLayouts/AdminLayouts";
 import AdminProfile from "../AdminDashboard/AdminProfile/AdminProfile";
 import ManageUser from "../AdminDashboard/ManageUser/ManageUser";
-import MakeAnnouncement from "../AdminDashboard/MakeAnnouncement/MakeAnnouncement"; 
+import MakeAnnouncement from "../AdminDashboard/MakeAnnouncement/MakeAnnouncement";
 import ErrorPage from "../components/ErrorPage/ErrorPage";
-import ManageActivitis from "../AdminDashboard/Activitis/ManageActivitis";
+import ManageActivitis from "../AdminDashboard/Activitis/ManageActivitis"; 
+import MemberShip from "../pages/MemberShip/MemberShip";
 
 export const router = createBrowserRouter([
   {
@@ -25,9 +26,22 @@ export const router = createBrowserRouter([
     element: <MainLayouts />,
     errorElement: <ErrorPage />,
     children: [
-      { index: true, element: <Home /> },
-      { path: "login", element: <Login /> },
-      { path: "register", element: <Register /> },
+      {
+        index: true,
+        element: <Home />
+      },
+      {
+        path: "login",
+        element: <Login />
+      },
+      {
+        path: "register",
+        element: <Register />
+      },
+      {
+        path: "membership/:id",
+        element: <MemberShip></MemberShip>
+      },
       {
         path: "posts/:id",
         element: (
@@ -47,12 +61,36 @@ export const router = createBrowserRouter([
     ),
     errorElement: <ErrorPage />,
     children: [
-      { index: true, element: <WelcomeUser /> },
-      { path: "updateProfile", element: <UserUpdate /> },
-      { path: "myProfile", element: <MyProfile /> },
-      { path: "comments/:postId", element: <CommentsPage /> },
-      { path: "addPosts", element: <AddPosts /> },
-      { path: "myPosts", element: <MyPosts /> },
+      {
+        index: true,
+
+        element: <WelcomeUser />
+      },
+      {
+        path: "updateProfile",
+
+        element: <UserUpdate />
+      },
+      {
+        path: "myProfile",
+
+        element: <MyProfile />
+      },
+      {
+        path: "comments/:postId",
+
+        element: <CommentsPage />
+      },
+      {
+        path: "addPosts",
+
+        element: <AddPosts />
+      },
+      {
+        path: "myPosts",
+
+        element: <MyPosts />
+      },
     ],
   },
   {
@@ -64,10 +102,22 @@ export const router = createBrowserRouter([
     ),
     errorElement: <ErrorPage />,
     children: [
-      { index: true, element: <AdminProfile /> },
-      { path: "manageUser", element: <ManageUser /> },
-      { path: "makeAnnouncement", element: <MakeAnnouncement /> },
-      { path: "manageActivitis", element: <ManageActivitis></ManageActivitis>},
+      {
+        index: true,
+        element: <AdminProfile />
+      },
+      {
+        path: "manageUser",
+        element: <ManageUser />
+      },
+      {
+        path: "makeAnnouncement",
+        element: <MakeAnnouncement />
+      },
+      {
+        path: "manageActivitis",
+        element: <ManageActivitis></ManageActivitis>
+      },
     ],
   },
   {

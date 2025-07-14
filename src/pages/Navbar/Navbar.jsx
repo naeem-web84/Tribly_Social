@@ -13,6 +13,40 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const axiosSecure = useAxiosSecure();
 
+  // Fetch mongo user info by email
+  const { data: mongoUser, isLoading } = useQuery({
+    queryKey: ["user", user?.email],
+    enabled: !!user?.email,
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/users/email/${user.email}`);
+      return res.data;
+    },
+  });
+
+  // Don't render navbar until user data is fetched
+  if (user && isLoading) {
+    return (
+      <div className="p-4 text-center font-semibold text-primary">Loading navbar...</div>
+    );
+  }
+
+  // Get dynamic ID
+  const id = mongoUser?._id;
+  const membershipPath = id ? `/membership/${id}` : "/membership";
+
+  const navLinks = [
+    { name: "Home", path: "/" },
+    { name: "Membership", path: membershipPath },
+    { name: "Dashboard", path: "/user" },
+    { name: "Admin Dashboard", path: "/admin" },
+  ];
+
+  const handleLogout = () => {
+    logOut()
+      .then(() => console.log("Logged out"))
+      .catch((err) => console.error("Logout error", err));
+  };
+
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (!e.target.closest(".dropdown-wrapper")) {
@@ -23,34 +57,13 @@ const Navbar = () => {
     return () => window.removeEventListener("click", handleClickOutside);
   }, []);
 
-  const handleLogout = () => {
-    logOut()
-      .then(() => console.log("Logged out"))
-      .catch((err) => console.error("Logout error", err));
-  };
-
-  const navLinks = [
-    { name: "Home", path: "/" },
-    { name: "Membership", path: "/membership" },
-    { name: "Dashboard", path: "/user" },
-    { name: "Admin Dashboard", path: "/admin" },  
-  ];
-
-  const { data: mongoUser } = useQuery({
-    queryKey: ["user", user?.email],
-    enabled: !!user?.email,
-    queryFn: async () => {
-      const res = await axiosSecure.get(`/users/email/${user.email}`);
-      return res.data;
-    },
-  });
-
   const profileImage = user?.photoURL || mongoUser?.photo || "/default-avatar.png";
   const displayName = user?.displayName || mongoUser?.userName || user?.email;
 
   return (
     <div className="navbar sticky top-0 z-50 bg-secondary text-base-content shadow-md font-urbanist">
       <div className="w-full max-w-6xl mx-auto px-4 flex items-center justify-between gap-4 relative">
+
         {/* Logo */}
         <Link to="/" className="text-xl font-bold flex items-center gap-2 text-base-content">
           <img src="/logo.svg" alt="Tribly logo" className="w-6 h-6" />
