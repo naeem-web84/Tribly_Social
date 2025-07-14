@@ -15,9 +15,9 @@ import CommentsPage from "../UserDashboard/CommentsPage/CommentsPage";
 import AdminLayouts from "../AdminDashboard/AdminLayouts/AdminLayouts";
 import AdminProfile from "../AdminDashboard/AdminProfile/AdminProfile";
 import ManageUser from "../AdminDashboard/ManageUser/ManageUser";
-import MakeAnnouncement from "../AdminDashboard/MakeAnnouncement/MakeAnnouncement";
-import Activitis from "../AdminDashboard/Activitis/Activitis";
+import MakeAnnouncement from "../AdminDashboard/MakeAnnouncement/MakeAnnouncement"; 
 import ErrorPage from "../components/ErrorPage/ErrorPage";
+import ManageActivitis from "../AdminDashboard/Activitis/ManageActivitis";
 
 export const router = createBrowserRouter([
   {
@@ -67,7 +67,7 @@ export const router = createBrowserRouter([
       { index: true, element: <AdminProfile /> },
       { path: "manageUser", element: <ManageUser /> },
       { path: "makeAnnouncement", element: <MakeAnnouncement /> },
-      { path: "activitis", element: <Activitis /> },
+      { path: "manageActivitis", element: <ManageActivitis></ManageActivitis>},
     ],
   },
   {

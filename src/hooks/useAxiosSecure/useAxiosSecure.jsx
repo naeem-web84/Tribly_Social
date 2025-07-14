@@ -1,13 +1,15 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import useAuth from "../useAuth/useAuth";
-
-const axiosSecure = axios.create({
-  baseURL: "http://localhost:5000",
-});
 
 const useAxiosSecure = () => {
   const { user } = useAuth();
+
+  const axiosSecure = useMemo(() => {
+    return axios.create({
+      baseURL: "http://localhost:5000",
+    });
+  }, []); // only create once
 
   useEffect(() => {
     const requestInterceptor = axiosSecure.interceptors.request.use(
@@ -24,7 +26,7 @@ const useAxiosSecure = () => {
     return () => {
       axiosSecure.interceptors.request.eject(requestInterceptor);
     };
-  }, [user]);
+  }, [user, axiosSecure]);
 
   return axiosSecure;
 };

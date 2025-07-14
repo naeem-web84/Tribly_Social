@@ -1,4 +1,5 @@
 import React from "react";
+import { Toaster } from "react-hot-toast";
 import { NavLink, Outlet } from "react-router";
 
 const AdminLayouts = () => {
@@ -39,14 +40,14 @@ const AdminLayouts = () => {
             📢 Announcements
           </NavLink>
           <NavLink
-            to="activitis"
+            to="manageActivitis"
             className={({ isActive }) =>
               isActive
                 ? "text-primary font-semibold"
                 : "hover:text-primary transition-colors"
             }
           >
-            📊 Activities
+            📊 ManageActivitis
           </NavLink>
         </nav>
       </aside>
@@ -86,10 +87,10 @@ const AdminLayouts = () => {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/admin/activitis" onClick={() => {
+                <NavLink to="manageActivitis" onClick={() => {
                   document.getElementById('admin-drawer').checked = false;
                 }}>
-                  📊 Activities
+                  📊 ManageActivitis
                 </NavLink>
               </li>
             </ul>
@@ -101,6 +102,7 @@ const AdminLayouts = () => {
       <main className="flex-1 p-6 hidden lg:block">
         <Outlet />
       </main>
+      <Toaster position="top-right" reverseOrder={false} />
     </div>
   );
 };

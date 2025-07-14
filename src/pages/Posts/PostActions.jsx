@@ -96,7 +96,7 @@ const PostActions = ({ post }) => {
             email: user.email || null,
             photo: user.photoURL || null,
           },
-          reported: false,
+          reportStatus: "false",
           feedback: "", // or omit if optional
         });
 
