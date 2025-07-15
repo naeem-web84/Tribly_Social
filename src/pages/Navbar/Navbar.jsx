@@ -13,26 +13,18 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const axiosSecure = useAxiosSecure();
 
-  // Fetch mongo user info by email
+  // ✅ Always call this hook – handle missing user inside queryFn
   const { data: mongoUser, isLoading } = useQuery({
     queryKey: ["user", user?.email],
-    enabled: !!user?.email,
     queryFn: async () => {
+      if (!user?.email) return null;
       const res = await axiosSecure.get(`/users/email/${user.email}`);
       return res.data;
     },
   });
 
-  // Don't render navbar until user data is fetched
-  if (user && isLoading) {
-    return (
-      <div className="p-4 text-center font-semibold text-primary">Loading navbar...</div>
-    );
-  }
-
-  // Get dynamic ID
   const id = mongoUser?._id;
-  const membershipPath = id ? `/membership/${id}` : "/membership";
+  const membershipPath = `/membership/${id}`;
 
   const navLinks = [
     { name: "Home", path: "/" },
@@ -59,6 +51,13 @@ const Navbar = () => {
 
   const profileImage = user?.photoURL || mongoUser?.photo || "/default-avatar.png";
   const displayName = user?.displayName || mongoUser?.userName || user?.email;
+
+  // ✅ Optional loading state if user is ready but data is not
+  if (user && isLoading) {
+    return (
+      <div className="p-4 text-center font-semibold text-primary">Loading navbar...</div>
+    );
+  }
 
   return (
     <div className="navbar sticky top-0 z-50 bg-secondary text-base-content shadow-md font-urbanist">
@@ -91,14 +90,20 @@ const Navbar = () => {
 
         {/* Mobile Menu Button */}
         <div className="lg:hidden">
-          <button onClick={() => setMenuOpen(!menuOpen)} className="btn btn-sm btn-ghost text-primary">
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="btn btn-sm btn-ghost text-primary"
+          >
             <FaBars size={18} />
           </button>
         </div>
 
         {/* Right Side */}
         <div className="flex items-center gap-3 relative">
-          <CustomButton className="btn-ghost btn-sm text-primary p-2" aria-label="Notifications">
+          <CustomButton
+            className="btn-ghost btn-sm text-primary p-2"
+            aria-label="Notifications"
+          >
             <FaBell size={18} />
           </CustomButton>
 
