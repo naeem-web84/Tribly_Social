@@ -5,7 +5,9 @@ import useAuth from "../../hooks/useAuth/useAuth";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import ThemeToggle from "../../components/ThemeToggle/ThemeToggle";
 import useAxiosSecure from "../../hooks/useAxiosSecure/useAxiosSecure";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query"; 
+import Logo from "../../components/Logo/Logo";
+
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
@@ -64,10 +66,7 @@ const Navbar = () => {
       <div className="w-full max-w-6xl mx-auto px-4 flex items-center justify-between gap-4 relative">
 
         {/* Logo */}
-        <Link to="/" className="text-xl font-bold flex items-center gap-2 text-base-content">
-          <img src="/logo.svg" alt="Tribly logo" className="w-6 h-6" />
-          Tribly
-        </Link>
+         <Logo></Logo>
 
         {/* Desktop Nav Links */}
         <div className="hidden lg:flex gap-2">
