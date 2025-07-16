@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router"; // ✅ Fix: react-router-dom, not "react-router"
-import { Users } from "lucide-react";
+import { Users } from "lucide-react"; 
 
 // The Logo component dynamically adapts to the theme
 const Logo = ({
@@ -58,7 +58,7 @@ const Logo = ({
           className={`${textSizeClass} ${textMarginClass} font-extrabold tracking-tight font-urbanist`}
           style={{ color: color }}
         >
-          ribly
+          ribly 
         </span>
       )}
 

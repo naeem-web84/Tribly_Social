@@ -1,13 +1,12 @@
-import { Link, NavLink } from "react-router";
+import { Link, NavLink } from "react-router"; 
 import { useEffect, useState } from "react";
 import { FaBell, FaBars } from "react-icons/fa";
 import useAuth from "../../hooks/useAuth/useAuth";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import ThemeToggle from "../../components/ThemeToggle/ThemeToggle";
 import useAxiosSecure from "../../hooks/useAxiosSecure/useAxiosSecure";
-import { useQuery } from "@tanstack/react-query"; 
+import { useQuery } from "@tanstack/react-query";
 import Logo from "../../components/Logo/Logo";
-
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
@@ -15,7 +14,6 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const axiosSecure = useAxiosSecure();
 
-  // ✅ Always call this hook – handle missing user inside queryFn
   const { data: mongoUser, isLoading } = useQuery({
     queryKey: ["user", user?.email],
     queryFn: async () => {
@@ -45,6 +43,7 @@ const Navbar = () => {
     const handleClickOutside = (e) => {
       if (!e.target.closest(".dropdown-wrapper")) {
         setDropdownOpen(false);
+        setMenuOpen(false);
       }
     };
     window.addEventListener("click", handleClickOutside);
@@ -54,21 +53,22 @@ const Navbar = () => {
   const profileImage = user?.photoURL || mongoUser?.photo || "/default-avatar.png";
   const displayName = user?.displayName || mongoUser?.userName || user?.email;
 
-  // ✅ Optional loading state if user is ready but data is not
   if (user && isLoading) {
     return (
-      <div className="p-4 text-center font-semibold text-primary">Loading navbar...</div>
+      <div className="p-4 text-center font-semibold text-primary">
+        Loading navbar...
+      </div>
     );
   }
 
   return (
     <div className="navbar sticky top-0 z-50 bg-secondary text-base-content shadow-md font-urbanist">
-      <div className="w-full max-w-6xl mx-auto px-4 flex items-center justify-between gap-4 relative">
+      <div className="relative w-full max-w-6xl mx-auto px-4 flex items-center justify-between gap-4">
 
         {/* Logo */}
-         <Logo></Logo>
+        <Logo />
 
-        {/* Desktop Nav Links */}
+        {/* Desktop Nav */}
         <div className="hidden lg:flex gap-2">
           {navLinks.map((link) => (
             <NavLink
@@ -87,27 +87,14 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* Mobile Menu Button */}
-        <div className="lg:hidden">
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="btn btn-sm btn-ghost text-primary"
-          >
-            <FaBars size={18} />
-          </button>
-        </div>
-
-        {/* Right Side */}
-        <div className="flex items-center gap-3 relative">
-          <CustomButton
-            className="btn-ghost btn-sm text-primary p-2"
-            aria-label="Notifications"
-          >
-            <FaBell size={18} />
-          </CustomButton>
-
-          {user ? (
-            <div className="relative dropdown-wrapper">
+        {/* Right side actions */}
+        <div className="flex items-center gap-2 relative">
+          {/* Desktop Only */}
+          {user && (
+            <div className="hidden lg:flex items-center gap-2 dropdown-wrapper relative">
+              <CustomButton className="btn-ghost btn-sm text-primary p-2">
+                <FaBell size={18} />
+              </CustomButton>
               <img
                 src={profileImage}
                 alt="Profile"
@@ -135,39 +122,79 @@ const Navbar = () => {
                 </div>
               )}
             </div>
-          ) : (
-            <Link to="/login">
-              <CustomButton className="btn-sm border border-primary text-primary hover:bg-primary hover:text-primary-content">
-                Join Us
-              </CustomButton>
-            </Link>
           )}
 
           {/* Theme Toggle */}
           <ThemeToggle />
-        </div>
 
-        {/* Mobile Dropdown Menu */}
-        {menuOpen && (
-          <div className="absolute top-full left-0 w-full bg-base-100 shadow-md z-40 px-4 py-2 lg:hidden">
-            {navLinks.map((link) => (
-              <NavLink
-                key={link.name}
-                to={link.path}
-                onClick={() => setMenuOpen(false)}
-                className={({ isActive }) =>
-                  `block px-3 py-2 rounded-md text-sm font-semibold transition-all ${
-                    isActive
-                      ? "bg-primary text-primary-content"
-                      : "text-primary hover:bg-primary hover:text-primary-content"
-                  }`
-                }
-              >
-                {link.name}
-              </NavLink>
-            ))}
-          </div>
-        )}
+          {/* Mobile Menu Toggle */}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="lg:hidden btn btn-sm btn-ghost text-primary"
+          >
+            <FaBars size={18} />
+          </button>
+
+          {/* Mobile Menu Dropdown */}
+          {menuOpen && (
+            <div className="absolute right-0 top-full mt-2 w-64 bg-base-100 shadow-lg rounded-md z-50 p-4 text-base-content lg:hidden">
+              {navLinks.map((link) => (
+                <NavLink
+                  key={link.name}
+                  to={link.path}
+                  onClick={() => setMenuOpen(false)}
+                  className={({ isActive }) =>
+                    `block px-3 py-2 rounded-md text-sm font-semibold transition-all ${
+                      isActive
+                        ? "bg-primary text-primary-content"
+                        : "text-primary hover:bg-primary hover:text-primary-content"
+                    }`
+                  }
+                >
+                  {link.name}
+                </NavLink>
+              ))}
+
+              <div className="border-t my-3" />
+
+              {user ? (
+                <div className="flex flex-col gap-3">
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={profileImage}
+                      alt="Profile"
+                      className="w-9 h-9 rounded-full border border-primary"
+                    />
+                    <span className="text-sm font-semibold truncate">{displayName}</span>
+                  </div>
+                  <Link
+                    to="/user"
+                    className="text-sm hover:underline text-primary"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    Dashboard
+                  </Link>
+                  <CustomButton
+                    type="button"
+                    className="text-left text-sm"
+                    onClick={() => {
+                      handleLogout();
+                      setMenuOpen(false);
+                    }}
+                  >
+                    Logout
+                  </CustomButton>
+                </div>
+              ) : (
+                <Link to="/login">
+                  <CustomButton className="btn-sm border border-primary text-primary hover:bg-primary hover:text-primary-content mt-2 w-full">
+                    Join Us
+                  </CustomButton>
+                </Link>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
