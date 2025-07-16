@@ -9,9 +9,12 @@ const stripePromise = loadStripe(import.meta.env.VITE_MEMBERSHIP_KEY);
 
 const MemberShip = () => {
     return (
-        <Elements stripe={stripePromise}>
-            <PaymentForm></PaymentForm>
-        </Elements>
+        <div className='min-h-screen'>
+            <Elements stripe={stripePromise}>
+                <PaymentForm></PaymentForm>
+            </Elements>
+        </div>
+
     );
 };
 

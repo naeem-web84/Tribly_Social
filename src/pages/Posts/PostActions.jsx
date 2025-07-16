@@ -179,13 +179,13 @@ const PostActions = ({ post }) => {
       <div className="flex items-center gap-2">
         <button
           onClick={handleAddComment}
-          className="btn btn-xs border text-primary border-primary hover:bg-primary hover:text-white"
+          className="btn btn-xs border text-secondary-content border-primary hover:bg-primary hover:text-white"
         >
           <FaPlus className="mr-1" /> Comment
         </button>
         <button
           onClick={handleShowComments}
-          className="btn btn-xs text-primary border border-primary hover:bg-primary hover:text-white"
+          className="btn btn-xs text-secondary-content border border-primary hover:bg-primary hover:text-white"
         >
           <FaEye className="mr-1" /> Show
         </button>

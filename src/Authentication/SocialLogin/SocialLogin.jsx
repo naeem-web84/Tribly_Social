@@ -31,7 +31,7 @@ const SocialLogin = ({ setLoading }) => {
       await saveUser(userInfo);
 
       // Redirect fix:
-      navigate("/", { replace: true }); // ✅ always to home
+      navigate("/", { replace: true }); 
     } catch (err) {
       console.error("Google Sign-in failed:", err);
     } finally {
@@ -41,10 +41,9 @@ const SocialLogin = ({ setLoading }) => {
 
   return (
     <div>
-      <div className="divider">OR</div>
       <button
         onClick={handleGoogleSignIn}
-        className="btn bg-white text-black border-gray-300 w-full"
+        className="btn bg-primary text-primary-content border-gray-300 w-full"
       >
         <svg width="18" height="18" viewBox="0 0 512 512" className="mr-2">
           <path

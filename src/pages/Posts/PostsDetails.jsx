@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams, useNavigate } from "react-router"; // fixed here
+import { useParams, useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import PostActions from "../Posts/PostActions";
 import Loading from "../../components/loading/Loading";
@@ -34,8 +34,9 @@ const PostsDetails = () => {
   } = post;
 
   return (
-    <section className="px-4 md:px-10 lg:px-20 py-10 bg-base-100 font-urbanist min-h-screen">
-      <div className="max-w-4xl mx-auto bg-base-200 p-6 rounded-lg shadow-lg space-y-6">
+    <section className="px-4 md:px-6 lg:px-10 py-10 bg-base-100 font-urbanist text-base-content">
+      <div className="w-full max-w-3xl mx-auto bg-base-200 border border-base-300 p-6 md:p-10 rounded-2xl shadow-lg space-y-8">
+
         {/* Author Info */}
         <div className="flex items-center gap-4">
           <img
@@ -44,48 +45,47 @@ const PostsDetails = () => {
             className="w-14 h-14 rounded-full border-2 border-primary object-cover"
           />
           <div>
-            <h4 className="text-lg font-semibold text-base-content">{authorName}</h4>
-            <span className="text-sm text-base-content/70">{tag}</span>
+            <h4 className="text-lg md:text-xl font-semibold">{authorName}</h4>
+            <span className="text-sm text-primary font-medium">#{tag}</span>
           </div>
         </div>
 
         {/* Title */}
-        <h1 className="text-3xl font-bold text-base-content leading-tight">
+        <h1 className="text-2xl md:text-3xl font-bold leading-tight">
           {postTitle}
         </h1>
 
         {/* Description */}
-        <p className="text-base text-base-content/80 leading-relaxed whitespace-pre-wrap">
+        <div className="text-base md:text-lg text-base-content/80 leading-relaxed whitespace-pre-wrap">
           {postDescription}
-        </p>
+        </div>
 
-        {/* Post time */}
+        {/* Post Time */}
         <p className="text-sm text-base-content/60 italic">
-          🕒 {new Date(postTime).toLocaleString()}
+          🕒 {postTime ? new Date(postTime).toLocaleString() : "Unknown Time"}
         </p>
 
         {/* Actions */}
         <PostActions post={post} />
 
-        {/* Share & Back Buttons */}
-        <div className="flex items-center lg:justify-between gap-4 mt-4">
+        {/* Buttons */}
+        <div className="flex flex-col-reverse sm:flex-row items-center justify-between gap-4 pt-4 border-t border-base-300">
+          <button
+            onClick={() => navigate(-1)}
+            className="btn btn-outline border-primary text-secondary-content hover:bg-primary hover:text-primary-content"
+          >
+            ← Back
+          </button>
+
           <FacebookShareButton
             url={window.location.href}
             quote={postTitle}
             hashtag={`#${tag}`}
-            className="flex items-center gap-2 btn btn-sm border border-primary text-primary hover:bg-primary hover:text-primary-content"
+            className="flex items-center gap-2 btn btn-outline border-primary text-primary hover:bg-primary hover:text-primary-content"
           >
             <FacebookIcon size={24} round />
-            <span className="text-secondary-content">Share on Facebook</span>
+            <span className="hidden sm:inline">Share on Facebook</span>
           </FacebookShareButton>
-
-          <button
-            onClick={() => navigate(-1)}
-            className="btn btn-sm btn-outline border-primary text-primary hover:bg-primary hover:text-primary-content"
-            aria-label="Go back"
-          >
-            ← Back
-          </button>
         </div>
       </div>
     </section>

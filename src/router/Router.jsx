@@ -17,8 +17,9 @@ import AdminProfile from "../AdminDashboard/AdminProfile/AdminProfile";
 import ManageUser from "../AdminDashboard/ManageUser/ManageUser";
 import MakeAnnouncement from "../AdminDashboard/MakeAnnouncement/MakeAnnouncement";
 import ErrorPage from "../components/ErrorPage/ErrorPage";
-import ManageActivitis from "../AdminDashboard/Activitis/ManageActivitis"; 
+import ManageActivitis from "../AdminDashboard/Activitis/ManageActivitis";
 import MemberShip from "../pages/MemberShip/MemberShip";
+import AdminRoutes from "../routes/AdminRoutes/AdminRoutes";
 
 export const router = createBrowserRouter([
   {
@@ -40,7 +41,9 @@ export const router = createBrowserRouter([
       },
       {
         path: "membership/:id",
-        element: <MemberShip></MemberShip>
+        element: <PrivateRoutes>
+          <MemberShip></MemberShip>
+        </PrivateRoutes>
       },
       {
         path: "posts/:id",
@@ -88,7 +91,6 @@ export const router = createBrowserRouter([
       },
       {
         path: "myPosts",
-
         element: <MyPosts />
       },
     ],
@@ -97,7 +99,9 @@ export const router = createBrowserRouter([
     path: "/admin", // changed from /adminLayouts
     element: (
       <PrivateRoutes>
-        <AdminLayouts />
+        <AdminRoutes>
+          <AdminLayouts />
+        </AdminRoutes>
       </PrivateRoutes>
     ),
     errorElement: <ErrorPage />,

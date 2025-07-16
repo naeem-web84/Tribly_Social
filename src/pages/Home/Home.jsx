@@ -7,9 +7,6 @@ import Announcements from "../Announcements/Announcements";
 const Home = () => {
   return (
     <div>
-      
-
-       
       <SearchBanner></SearchBanner>
       <TagBoard></TagBoard>
       <Posts></Posts>

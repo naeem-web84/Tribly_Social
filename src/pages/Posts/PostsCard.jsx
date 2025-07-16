@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { Link } from "react-router";  
 import { FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa";
 import useAxiosSecure from "../../hooks/useAxiosSecure/useAxiosSecure";
 
 const PostsCard = ({ post }) => {
   const {
     authorImage,
+    authorName,
     postTitle,
     tag,
     postTime,
@@ -18,13 +19,13 @@ const PostsCard = ({ post }) => {
   const [commentCount, setCommentCount] = useState(0);
 
   useEffect(() => {
-    if (!axios) return; // Guard here
-
-    axios.get(`/comments/count/${postTitle}`)
-      .then(res => {
+    if (!axios) return;
+    axios
+      .get(`/comments/count/${postTitle}`)
+      .then((res) => {
         setCommentCount(res.data.count || 0);
       })
-      .catch(err => {
+      .catch((err) => {
         console.error("Failed to fetch comment count", err);
       });
   }, [axios, postTitle]);
@@ -40,6 +41,7 @@ const PostsCard = ({ post }) => {
       tabIndex={0}
       aria-label={`Post titled ${postTitle}`}
     >
+      {/* Top section: Author & Tag */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-3">
           <img
@@ -48,14 +50,19 @@ const PostsCard = ({ post }) => {
             className="w-12 h-12 rounded-full border border-primary object-cover"
             loading="lazy"
           />
-          <span className="text-sm font-semibold text-primary">{tag}</span>
+          <div className="flex flex-col">
+            <span className="font-medium text-base-content">{authorName}</span>
+            <span className="text-sm text-primary font-semibold">#{tag}</span>
+          </div>
         </div>
       </div>
 
+      {/* Post Title */}
       <h2 className="text-xl font-bold text-base-content mb-4 leading-snug">
         {postTitle}
       </h2>
 
+      {/* Post Meta Info */}
       <div className="flex justify-between items-center mb-4 text-base-content/80 text-sm">
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-1">
@@ -64,8 +71,7 @@ const PostsCard = ({ post }) => {
           <div className="flex items-center gap-1">
             <FaRegThumbsDown /> {downVote}
           </div>
-          {/* You can optionally display comment count here */}
-          <div>
+          <div className="flex items-center gap-1">
             💬 {commentCount}
           </div>
         </div>
@@ -78,9 +84,10 @@ const PostsCard = ({ post }) => {
         </time>
       </div>
 
+      {/* View Details Button */}
       <Link
         to={`/posts/${_id}`}
-        className="btn btn-sm border border-primary text-primary hover:bg-primary hover:text-primary-content self-start"
+        className="btn btn-sm border border-primary text-secondary-content hover:bg-primary hover:text-primary-content self-start"
       >
         View Details
       </Link>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../../pages/Navbar/Navbar';
 import { Outlet } from 'react-router';
+import Footer from '../../pages/Footer/Footer';
 
 const MainLayouts = () => {
   // Load saved theme or default to 'mylight'
@@ -20,6 +21,7 @@ const MainLayouts = () => {
       {/* Pass theme toggle state to Navbar */}
       <Navbar theme={theme} setTheme={setTheme} />
       <Outlet />
+      <Footer></Footer>
     </div>
   );
 };
