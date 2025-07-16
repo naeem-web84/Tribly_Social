@@ -20,6 +20,7 @@ import ErrorPage from "../components/ErrorPage/ErrorPage";
 import ManageActivitis from "../AdminDashboard/Activitis/ManageActivitis";
 import MemberShip from "../pages/MemberShip/MemberShip";
 import AdminRoutes from "../routes/AdminRoutes/AdminRoutes";
+import AddTags from "../AdminDashboard/AddTags/AddTags";
 
 export const router = createBrowserRouter([
   {
@@ -113,6 +114,10 @@ export const router = createBrowserRouter([
       {
         path: "manageUser",
         element: <ManageUser />
+      },
+      {
+        path: "tags",
+        element: <AddTags></AddTags>
       },
       {
         path: "makeAnnouncement",

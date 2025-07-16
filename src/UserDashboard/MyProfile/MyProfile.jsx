@@ -7,6 +7,7 @@ import { FiEdit } from "react-icons/fi";
 import BadgeIcon from "../BadgeIcon/BadgeIcon";
 import ShowThreePosts from "../ShowThreePosts/ShowThreePosts";
 import UserInfoSection from "../UserInfoSection/UserInfoSection";
+import { motion } from "framer-motion";
 
 const MyProfile = () => {
   const { user, loading: authLoading } = useAuth();
@@ -42,7 +43,13 @@ const MyProfile = () => {
   } = data || {};
 
   return (
-    <div className="w-full max-w-6xl mx-auto font-urbanist px-2 md:px-4">
+    <motion.div
+      className="w-full max-w-6xl mx-auto font-urbanist px-2 md:px-4"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 20 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
       {/* Banner Image */}
       <div className="w-full bg-base-100 object-contain overflow-hidden rounded-t-lg">
         <img
@@ -67,7 +74,9 @@ const MyProfile = () => {
           {/* Name, Badge, and Button */}
           <div className="flex flex-col items-center md:items-start justify-center w-full">
             <div className="flex items-center gap-2 justify-center md:justify-start w-full">
-              <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-primary">{userName}</h1>
+              <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-primary">
+                {userName}
+              </h1>
               <BadgeIcon badge={badge} />
             </div>
 
@@ -99,9 +108,9 @@ const MyProfile = () => {
           created_at={created_at}
           last_log_in={last_log_in}
           about={about}
-        ></UserInfoSection>
+        />
       </div>
-    </div>
+    </motion.div>
   );
 };
 

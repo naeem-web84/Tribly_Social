@@ -55,7 +55,6 @@ const UserUpdate = () => {
       about: data.about,
     };
 
-    // Helper function to upload image to imgbb
     async function uploadImage(file) {
       if (!file) return null;
       const formData = new FormData();
@@ -68,13 +67,11 @@ const UserUpdate = () => {
       return imgData.success ? imgData.data.url : null;
     }
 
-    // Upload profile image if new file selected
     if (data.image && data.image.length > 0) {
       const profileUrl = await uploadImage(data.image[0]);
       if (profileUrl) updatedFields.photo = profileUrl;
     }
 
-    // Upload banner image if new file selected
     if (data.bannerImage && data.bannerImage.length > 0) {
       const bannerUrl = await uploadImage(data.bannerImage[0]);
       if (bannerUrl) updatedFields.bannerImage = bannerUrl;
@@ -86,24 +83,35 @@ const UserUpdate = () => {
   if (isLoading || isUpdating) return <Loading />;
 
   return (
-    <div className="max-w-4xl mx-auto p-8 bg-base-100 rounded-lg shadow-lg font-urbanist">
+    <div className="max-w-4xl mx-auto p-6 sm:p-8 bg-base-100 rounded-lg shadow-lg font-urbanist">
       <h2 className="text-3xl font-bold text-primary mb-8 text-center">Update Your Profile</h2>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
         {/* Full Name */}
         <div className="form-control">
-          <label className="label font-semibold text-secondary-content">Full Name</label>
+          <label className="label">
+            <span className="label-text font-semibold text-secondary-content">Full Name</span>
+          </label>
           <input
             type="text"
-            className="input input-bordered"
+            placeholder="Enter your full name"
+            className={`input input-bordered focus:outline-primary ${
+              errors.name ? "input-error" : ""
+            }`}
             {...register("name", { required: "Name is required" })}
           />
-          {errors.name && <p className="text-red-500 mt-1 text-sm">{errors.name.message}</p>}
+          {errors.name && (
+            <p className="text-error mt-1 text-sm">{errors.name.message}</p>
+          )}
         </div>
 
         {/* Email (readonly) */}
         <div className="form-control">
-          <label className="label font-semibold text-secondary-content">Email (Read-only)</label>
+          <label className="label">
+            <span className="label-text font-semibold text-secondary-content">
+              Email (Read-only)
+            </span>
+          </label>
           <input
             type="email"
             className="input input-bordered bg-gray-100 text-gray-500 cursor-not-allowed"
@@ -114,37 +122,48 @@ const UserUpdate = () => {
 
         {/* About Me (full width) */}
         <div className="form-control md:col-span-2">
-          <label className="label font-semibold text-secondary-content">About Me</label>
+          <label className="label">
+            <span className="label-text font-semibold text-secondary-content">About Me</span>
+          </label>
           <textarea
             rows={4}
-            className="textarea textarea-bordered resize-none"
+            placeholder="Write something about yourself"
+            className={`textarea textarea-bordered resize-none focus:outline-primary ${
+              errors.about ? "textarea-error" : ""
+            }`}
             {...register("about", { required: "About is required" })}
           />
-          {errors.about && <p className="text-red-500 mt-1 text-sm">{errors.about.message}</p>}
+          {errors.about && (
+            <p className="text-error mt-1 text-sm">{errors.about.message}</p>
+          )}
         </div>
 
         {/* Profile Image Upload */}
         <div className="form-control">
-          <label className="label font-semibold text-secondary-content">
-            Profile Image (optional)
+          <label className="label">
+            <span className="label-text font-semibold text-secondary-content">
+              Profile Image (optional)
+            </span>
           </label>
           <input
             type="file"
             accept="image/*"
-            className="file-input file-input-bordered"
+            className="file-input file-input-bordered file-input-primary"
             {...register("image")}
           />
         </div>
 
         {/* Banner Image Upload */}
         <div className="form-control">
-          <label className="label font-semibold text-secondary-content">
-            Banner Image (optional)
+          <label className="label">
+            <span className="label-text font-semibold text-secondary-content">
+              Banner Image (optional)
+            </span>
           </label>
           <input
             type="file"
             accept="image/*"
-            className="file-input file-input-bordered"
+            className="file-input file-input-bordered file-input-primary"
             {...register("bannerImage")}
           />
         </div>

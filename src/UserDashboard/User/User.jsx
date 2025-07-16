@@ -30,11 +30,11 @@ const User = () => {
   };
 
   return (
-    <div className="drawer lg:drawer-open font-urbanist bg-secondary text-secondary-content">
+    <div className="drawer lg:drawer-open font-urbanist bg-secondary text-secondary-content min-h-screen">
       <input id="user-drawer" type="checkbox" className="drawer-toggle" ref={drawerRef} />
 
-      {/* Right side content */}
-      <div className="drawer-content flex flex-col">
+      {/* Content */}
+      <div className="drawer-content flex flex-col min-h-screen p-2 md:p-4 lg:p-6">
         {/* Navbar for small screens */}
         <div className="navbar bg-secondary text-secondary-content w-full lg:hidden shadow">
           <div className="flex-none">
@@ -58,22 +58,22 @@ const User = () => {
               </svg>
             </label>
           </div>
-          <div className="mx-2 flex-1 px-2 font-semibold">User Menu</div>
+          <div className="mx-2 flex-1 px-2 font-semibold text-lg">User Menu</div>
         </div>
 
-        {/* Page content area */}
-        <div className="px-2 bg-base-100 dark:bg-secondary rounded-lg shadow flex-grow overflow-auto">
+        {/* Main Page Content */}
+        <div className="bg-base-100 dark:bg-secondary rounded-lg shadow flex-grow overflow-auto p-4">
           <Outlet />
         </div>
       </div>
 
-      {/* Sidebar drawer menu */}
+      {/* Sidebar */}
       <div className="drawer-side">
         <label htmlFor="user-drawer" className="drawer-overlay"></label>
-        <ul className="menu bg-primary text-primary-content min-h-full w-64 p-4 space-y-2">
-          {/* Sidebar header */}
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold">User Menu</h2>
+        <ul className="menu bg-primary text-primary-content min-h-full w-64 p-4 space-y-3 flex flex-col">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-6 px-2">
+            <h2 className="text-xl font-bold">User Menu</h2>
             <button
               onClick={toggleTheme}
               className="btn btn-sm bg-secondary btn-ghost text-secondary-content"
@@ -83,7 +83,7 @@ const User = () => {
             </button>
           </div>
 
-          {/* Home Page in User */}
+          {/* Nav Links */}
           <li>
             <NavLink
               to="/user"
@@ -102,7 +102,6 @@ const User = () => {
             </NavLink>
           </li>
 
-          {/* Other Routes */}
           <li>
             <NavLink
               to="myProfile"
@@ -157,8 +156,7 @@ const User = () => {
             </NavLink>
           </li>
 
-          {/* Back to main home */}
-          <li className="pt-4">
+          <li className="pt-6 mt-auto">
             <NavLink
               to="/"
               end

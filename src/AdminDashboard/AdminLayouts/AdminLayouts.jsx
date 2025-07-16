@@ -49,6 +49,16 @@ const AdminLayouts = () => {
           >
             📊 ManageActivitis
           </NavLink>
+          <NavLink
+            to="tags"
+            className={({ isActive }) =>
+              isActive
+                ? "text-primary font-semibold"
+                : "hover:text-primary transition-colors"
+            }
+          >
+            🏷️ Manage Tags
+          </NavLink>
         </nav>
       </aside>
 
@@ -64,33 +74,55 @@ const AdminLayouts = () => {
           </div>
           <div className="drawer-side">
             <label htmlFor="admin-drawer" className="drawer-overlay"></label>
-            <ul className="menu p-4 w-64 bg-base-100 text-base-content">
+            <ul className="menu p-4 w-64 bg-base-100 text-base-content space-y-2">
               <li>
-                <NavLink to="/admin" onClick={() => {
-                  document.getElementById('admin-drawer').checked = false;
-                }}>
+                <NavLink
+                  to="/admin"
+                  onClick={() => {
+                    document.getElementById("admin-drawer").checked = false;
+                  }}
+                >
                   🏠 Profile
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/admin/manageUser" onClick={() => {
-                  document.getElementById('admin-drawer').checked = false;
-                }}>
+                <NavLink
+                  to="/admin/manageUser"
+                  onClick={() => {
+                    document.getElementById("admin-drawer").checked = false;
+                  }}
+                >
                   👥 Manage Users
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/admin/makeAnnouncement" onClick={() => {
-                  document.getElementById('admin-drawer').checked = false;
-                }}>
+                <NavLink
+                  to="/admin/makeAnnouncement"
+                  onClick={() => {
+                    document.getElementById("admin-drawer").checked = false;
+                  }}
+                >
                   📢 Announcements
                 </NavLink>
               </li>
               <li>
-                <NavLink to="manageActivitis" onClick={() => {
-                  document.getElementById('admin-drawer').checked = false;
-                }}>
+                <NavLink
+                  to="/admin/manageActivitis"
+                  onClick={() => {
+                    document.getElementById("admin-drawer").checked = false;
+                  }}
+                >
                   📊 ManageActivitis
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/admin/tags"
+                  onClick={() => {
+                    document.getElementById("admin-drawer").checked = false;
+                  }}
+                >
+                  🏷️ Manage Tags
                 </NavLink>
               </li>
             </ul>
