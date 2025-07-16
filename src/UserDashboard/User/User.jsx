@@ -1,6 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
-import { NavLink, Outlet } from "react-router";
-import { FaUserCircle, FaPlusCircle, FaListAlt, FaSun, FaMoon } from "react-icons/fa";
+import { NavLink, Outlet } from "react-router";  
+import {
+  FaUserCircle,
+  FaPlusCircle,
+  FaListAlt,
+  FaSun,
+  FaMoon,
+  FaHome,
+  FaArrowLeft,
+} from "react-icons/fa";
 
 const User = () => {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
@@ -16,7 +24,6 @@ const User = () => {
   };
 
   const handleLinkClick = () => {
-    // Auto close drawer only on small screens
     if (window.innerWidth < 1024 && drawerRef.current) {
       drawerRef.current.checked = false;
     }
@@ -64,7 +71,7 @@ const User = () => {
       <div className="drawer-side">
         <label htmlFor="user-drawer" className="drawer-overlay"></label>
         <ul className="menu bg-primary text-primary-content min-h-full w-64 p-4 space-y-2">
-          {/* Sidebar header with icon theme toggle */}
+          {/* Sidebar header */}
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-bold">User Menu</h2>
             <button
@@ -76,9 +83,30 @@ const User = () => {
             </button>
           </div>
 
+          {/* Home Page in User */}
+          <li>
+            <NavLink
+              to="/user"
+              end
+              onClick={handleLinkClick}
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-3 py-2 rounded ${
+                  isActive
+                    ? "bg-secondary text-secondary-content"
+                    : "hover:bg-secondary hover:text-secondary-content"
+                } transition-colors duration-200`
+              }
+            >
+              <FaHome />
+              Home
+            </NavLink>
+          </li>
+
+          {/* Other Routes */}
           <li>
             <NavLink
               to="myProfile"
+              end
               onClick={handleLinkClick}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3 py-2 rounded ${
@@ -96,6 +124,7 @@ const User = () => {
           <li>
             <NavLink
               to="addPosts"
+              end
               onClick={handleLinkClick}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3 py-2 rounded ${
@@ -113,6 +142,7 @@ const User = () => {
           <li>
             <NavLink
               to="myPosts"
+              end
               onClick={handleLinkClick}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3 py-2 rounded ${
@@ -124,6 +154,25 @@ const User = () => {
             >
               <FaListAlt />
               My Posts
+            </NavLink>
+          </li>
+
+          {/* Back to main home */}
+          <li className="pt-4">
+            <NavLink
+              to="/"
+              end
+              onClick={handleLinkClick}
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-3 py-2 rounded ${
+                  isActive
+                    ? "bg-secondary text-secondary-content"
+                    : "hover:bg-secondary hover:text-secondary-content"
+                } transition-colors duration-200`
+              }
+            >
+              <FaArrowLeft />
+              Back to Home
             </NavLink>
           </li>
         </ul>
