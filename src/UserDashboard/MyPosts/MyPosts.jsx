@@ -4,6 +4,8 @@ import useAuth from "../../hooks/useAuth/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure/useAxiosSecure";
 import Swal from "sweetalert2";
 import { Link, useNavigate } from "react-router";
+import ErrorPage from "../../components/ErrorPage/ErrorPage";
+import Loading from "../../components/loading/Loading";
 
 const MyPosts = () => {
   const { user } = useAuth();
@@ -96,9 +98,9 @@ const MyPosts = () => {
     return <span>{data}</span>;
   };
 
-  if (isLoading) return <p className="text-center p-4">Loading posts...</p>;
+  if (isLoading) return <Loading></Loading>;
   if (error)
-    return <p className="text-center text-red-600">Failed to load posts</p>;
+    return <ErrorPage></ErrorPage>;
 
   return (
     <div className="p-6 max-w-5xl mx-auto font-urbanist">

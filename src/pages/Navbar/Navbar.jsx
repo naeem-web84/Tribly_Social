@@ -7,6 +7,7 @@ import ThemeToggle from "../../components/ThemeToggle/ThemeToggle";
 import useAxiosSecure from "../../hooks/useAxiosSecure/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import Logo from "../../components/Logo/Logo";
+import Loading from "../../components/loading/Loading";
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
@@ -28,10 +29,12 @@ const Navbar = () => {
   const id = mongoUser?._id;
   const membershipPath = `/membership/${id}`;
 
+  // Added User Guide link here
   const navLinks = [
     { name: "Home", path: "/" },
     ...(id ? [{ name: "Membership", path: membershipPath }] : []),
     ...(mongoUser?.role === "admin" ? [{ name: "Admin Dashboard", path: "/admin" }] : []),
+    { name: "User Guide", path: "/userGuide" },  // <-- New link added
   ];
 
   const handleLogout = () => {
@@ -58,11 +61,7 @@ const Navbar = () => {
   const displayName = user?.displayName || mongoUser?.userName || user?.email;
 
   if (user && isLoading) {
-    return (
-      <div className="p-4 text-center font-semibold text-primary">
-        Loading navbar...
-      </div>
-    );
+    return <Loading />;
   }
 
   return (
@@ -78,9 +77,10 @@ const Navbar = () => {
               key={link.name}
               to={link.path}
               className={({ isActive }) =>
-                `btn btn-sm font-semibold rounded-md transition-all duration-300 ${isActive
-                  ? "bg-primary text-primary-content"
-                  : "border border-primary text-primary hover:bg-primary hover:text-primary-content"
+                `btn btn-sm font-semibold rounded-md transition-all duration-300 ${
+                  isActive
+                    ? "bg-primary text-primary-content"
+                    : "border border-primary text-primary hover:bg-primary hover:text-primary-content"
                 }`
               }
             >
@@ -159,9 +159,10 @@ const Navbar = () => {
                   to={link.path}
                   onClick={() => setMenuOpen(false)}
                   className={({ isActive }) =>
-                    `block px-3 py-2 rounded-md text-sm font-semibold transition-all ${isActive
-                      ? "bg-primary text-primary-content"
-                      : "text-primary hover:bg-primary hover:text-primary-content"
+                    `block px-3 py-2 rounded-md text-sm font-semibold transition-all ${
+                      isActive
+                        ? "bg-primary text-primary-content"
+                        : "text-primary hover:bg-primary hover:text-primary-content"
                     }`
                   }
                 >

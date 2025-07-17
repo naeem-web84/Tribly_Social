@@ -27,8 +27,7 @@ const cardVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
 };
 
-const COLORS = ['#22c55e', '#2563eb', '#a78bfa', '#737373']; 
-// green (secondary), blue (primary), purple (accent), gray (neutral)
+const COLORS = ['#22c55e', '#2563eb', '#a78bfa', '#737373'];  
 
 const AdminCollection = () => {
   const axiosSecure = useAxiosSecure();

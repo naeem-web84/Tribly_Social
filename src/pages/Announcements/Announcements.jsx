@@ -3,6 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import useAxios from "../../hooks/useAxiosSecure/useAxios";
 import { Typewriter } from "react-simple-typewriter";
 import { HiSpeakerphone } from "react-icons/hi"; // 📢 React Icon
+import Loading from "../../components/loading/Loading";
+import ErrorPage from "../../components/ErrorPage/ErrorPage";
 
 const fetchAnnouncements = async (axiosInstance) => {
   const response = await axiosInstance.get("/api/announcements");
@@ -26,16 +28,12 @@ const Announcements = () => {
 
   if (isLoading)
     return (
-      <div className="text-center py-10 text-lg font-semibold text-primary">
-        Loading announcements...
-      </div>
+       <Loading></Loading>
     );
 
   if (isError)
     return (
-      <div className="text-center py-10 text-red-500 font-medium">
-        Error: {error.message}
-      </div>
+      <ErrorPage></ErrorPage>
     );
 
   return (

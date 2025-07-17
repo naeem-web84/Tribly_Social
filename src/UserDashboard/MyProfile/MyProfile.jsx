@@ -8,6 +8,8 @@ import BadgeIcon from "../BadgeIcon/BadgeIcon";
 import ShowThreePosts from "../ShowThreePosts/ShowThreePosts";
 import UserInfoSection from "../UserInfoSection/UserInfoSection";
 import { motion } from "framer-motion";
+import Loading from "../../components/loading/Loading";
+import ErrorPage from "../../components/ErrorPage/ErrorPage";
 
 const MyProfile = () => {
   const { user, loading: authLoading } = useAuth();
@@ -24,9 +26,9 @@ const MyProfile = () => {
   });
 
   if (isLoading || authLoading)
-    return <p className="text-center p-4">Loading user profile...</p>;
+    return <Loading></Loading>;
   if (error)
-    return <p className="text-center text-red-500">Error: {error.message}</p>;
+    return <ErrorPage></ErrorPage>;
 
   const {
     userName,

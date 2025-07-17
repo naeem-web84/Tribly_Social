@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '../../pages/Navbar/Navbar';
 import { Outlet } from 'react-router';
 import Footer from '../../pages/Footer/Footer';
+import ScrollToTop from '../../components/ScrollToTop/ScrollToTop';
 
 const MainLayouts = () => {
   // Load saved theme or default to 'mylight'
@@ -20,6 +21,7 @@ const MainLayouts = () => {
     <div className="min-h-screen bg-base-100 text-primary-content transition-colors duration-300">
       {/* Pass theme toggle state to Navbar */}
       <Navbar theme={theme} setTheme={setTheme} />
+      <ScrollToTop></ScrollToTop>
       <Outlet />
       <Footer></Footer>
     </div>

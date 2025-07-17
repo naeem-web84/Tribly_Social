@@ -6,6 +6,7 @@ import PostCard from "./PostsCard";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import Loading from "../../components/loading/Loading";
+import ErrorPage from "../../components/ErrorPage/ErrorPage";
 
 const Posts = () => {
   const axios = useAxios();
@@ -23,7 +24,7 @@ const Posts = () => {
   });
 
   if (isLoading) return <Loading />;
-  if (error) return <div className="text-center py-10 text-red-500">Error loading posts</div>;
+  if (error) return <ErrorPage></ErrorPage>;
 
   const { posts, totalPosts } = data;
   const totalPages = Math.ceil(totalPosts / limit);

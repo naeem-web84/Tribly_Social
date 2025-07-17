@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure/useAxiosSecure";
 import Loading from "../../components/loading/Loading";
 import Swal from "sweetalert2";
+import ErrorPage from "../../components/ErrorPage/ErrorPage";
 
 const feedbackOptions = [
   "Inappropriate language",
@@ -59,7 +60,7 @@ const CommentsPage = () => {
   };
 
   if (!axios || isLoading) return <Loading />;
-  if (error) return <div className="text-center text-red-600">Error loading comments</div>;
+  if (error) return <ErrorPage></ErrorPage>;
   if (!comments || comments.length === 0) return <div className="text-center">No comments found.</div>;
 
   return (

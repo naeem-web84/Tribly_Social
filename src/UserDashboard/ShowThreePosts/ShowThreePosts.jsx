@@ -5,6 +5,7 @@ import useAuth from "../../hooks/useAuth/useAuth";
 import { motion, AnimatePresence } from "framer-motion"; 
 import Loading from "../../components/loading/Loading";
 import PostsCard from "../../pages/Posts/PostsCard";
+import ErrorPage from "../../components/ErrorPage/ErrorPage";
 
 const ShowThreePosts = () => {
   const { user } = useAuth();
@@ -23,9 +24,7 @@ const ShowThreePosts = () => {
   if (isLoading) return <Loading />;
   if (error)
     return (
-      <p className="text-center text-red-500 p-4">
-        Failed to load your recent posts.
-      </p>
+       <ErrorPage></ErrorPage>
     );
 
   if (!data || data.length === 0)

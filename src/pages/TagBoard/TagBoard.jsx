@@ -4,6 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { FaHashtag } from "react-icons/fa";
 import useAxios from "../../hooks/useAxiosSecure/useAxios";
+import Loading from "../../components/loading/Loading";
+import ErrorPage from "../../components/ErrorPage/ErrorPage";
 
 const cardVariants = {
   hidden: { opacity: 0, y: 30 },
@@ -26,10 +28,10 @@ const TagBoard = () => {
   });
 
   if (isLoading) {
-    return <p className="text-center text-lg py-12">Loading tags...</p>;
+    return <Loading></Loading>;
   }
   if (isError) {
-    return <p className="text-center text-error py-12">Failed to load tags.</p>;
+    return <ErrorPage></ErrorPage>;
   }
   if (tags.length === 0) {
     return <p className="text-center text-gray-500 py-12">No tags found.</p>;

@@ -4,6 +4,8 @@ import useAuth from "../../hooks/useAuth/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure/useAxiosSecure";
 import Swal from "sweetalert2";
 import { Link, useNavigate } from "react-router";
+import Loading from "../../components/loading/Loading";
+import ErrorPage from "../../components/ErrorPage/ErrorPage";
 
 const MyPosts = () => {
   const { user } = useAuth();
@@ -80,8 +82,8 @@ const MyPosts = () => {
       enabled: !!postId,
     });
 
-    if (isLoading) return <span>...</span>;
-    if (error) return <span>0</span>;
+    if (isLoading) return <Loading></Loading>
+    if (error) return <ErrorPage></ErrorPage>
     return <span>{data}</span>;
   };
 

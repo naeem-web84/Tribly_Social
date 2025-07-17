@@ -31,8 +31,7 @@ const PostsCard = ({ post }) => {
   }, [axios, postTitle]);
 
   const postDate = postTime ? new Date(postTime) : null;
-  const isValidDate = postDate instanceof Date && !isNaN(postDate);
-  console.log("Post object:", post);
+  const isValidDate = postDate instanceof Date && !isNaN(postDate); 
 
   return (
     <article

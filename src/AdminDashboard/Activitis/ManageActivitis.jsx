@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import useAxiosSecure from "../../hooks/useAxiosSecure/useAxiosSecure";
 import { toast } from "react-hot-toast";
+import Loading from "../../components/loading/Loading";
 
 const ManageActivities = () => {
   const axiosSecure = useAxiosSecure();
@@ -18,7 +19,7 @@ const ManageActivities = () => {
     },
   });
 
-  if (isLoading) return <p>Loading comments...</p>;
+  if (isLoading) return <Loading></Loading>;
 
   const reportedComments = comments.filter(
     (comment) => comment.reportStatus === "pending"

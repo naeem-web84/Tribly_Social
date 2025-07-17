@@ -21,6 +21,7 @@ import ManageActivitis from "../AdminDashboard/Activitis/ManageActivitis";
 import MemberShip from "../pages/MemberShip/MemberShip";
 import AdminRoutes from "../routes/AdminRoutes/AdminRoutes";
 import AddTags from "../AdminDashboard/AddTags/AddTags";
+import TriblyUserGuide from "../components/TriblyUserGuide/TriblyUserGuide";
 
 export const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ export const router = createBrowserRouter([
       {
         path: "register",
         element: <Register />
+      },
+      {
+        path: "userGuide",
+        element: <TriblyUserGuide></TriblyUserGuide>
       },
       {
         path: "membership/:id",
@@ -97,7 +102,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "/admin", // changed from /adminLayouts
+    path: "/admin",  
     element: (
       <PrivateRoutes>
         <AdminRoutes>
@@ -130,7 +135,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "*", // catch all unknown routes
+    path: "*",  
     element: <ErrorPage />,
   },
 ]);

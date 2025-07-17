@@ -6,6 +6,7 @@ import Lottie from "lottie-react";
 import useAxiosSecure from "../../hooks/useAxiosSecure/useAxiosSecure";
 import Loading from "../../components/loading/Loading";
 import paymentLottie from "../../assets/lotties/payment-lottie.json";
+import Swal from "sweetalert2";
 
 const PaymentForm = () => {
   const axiosSecure = useAxiosSecure();
@@ -91,6 +92,14 @@ const PaymentForm = () => {
       });
 
       await queryClient.invalidateQueries(["userId", id]);
+
+      Swal.fire({
+        icon: "success",
+        title: "Payment Successful",
+        text: "✅ Payment successful! You are now a Member.",
+        timer: 2500,
+        showConfirmButton: false,
+      });
     }
 
     setProcessing(false);

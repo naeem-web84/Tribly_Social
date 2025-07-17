@@ -5,6 +5,7 @@ import PostActions from "../Posts/PostActions";
 import Loading from "../../components/loading/Loading";
 import { FacebookShareButton, FacebookIcon } from "react-share";
 import useAxiosSecure from "../../hooks/useAxiosSecure/useAxiosSecure";
+import ErrorPage from "../../components/ErrorPage/ErrorPage";
 
 const PostsDetails = () => {
   const { id } = useParams();
@@ -21,7 +22,7 @@ const PostsDetails = () => {
   });
 
   if (!axios || isLoading) return <Loading />;
-  if (error) return <div className="text-center py-10">Error loading post</div>;
+  if (error) return <ErrorPage></ErrorPage>
   if (!post) return <div className="text-center py-10">Post not found</div>;
 
   const {

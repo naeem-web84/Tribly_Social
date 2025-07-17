@@ -6,6 +6,8 @@ import Swal from "sweetalert2";
 
 import useAxiosSecure from "../../hooks/useAxiosSecure/useAxiosSecure";
 import useAuth from "../../hooks/useAuth/useAuth";
+import Loading from "../../components/loading/Loading";
+import ErrorPage from "../../components/ErrorPage/ErrorPage";
 
 const AddPosts = () => {
   const axiosSecure = useAxiosSecure();
@@ -112,8 +114,8 @@ const AddPosts = () => {
     mutation.mutate(postPayload);
   };
 
-  if (loadingUser) return <p className="p-4 font-urbanist">Loading user data...</p>;
-  if (userError) return <p className="p-4 font-urbanist text-red-600">Failed to load user info</p>;
+  if (loadingUser) return <Loading></Loading>;
+  if (userError) return <ErrorPage></ErrorPage>;
 
   if (postLimitReached) {
     return (

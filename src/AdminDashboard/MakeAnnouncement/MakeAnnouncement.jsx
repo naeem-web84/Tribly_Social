@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure/useAxiosSecure";
 import { motion } from "framer-motion";
+import Swal from "sweetalert2";
 
 const containerVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -37,16 +38,20 @@ const MakeAnnouncement = () => {
       createdAt: new Date(),
     };
 
-    console.log("📢 Announcement data ready to post:", announcement);
-
     try {
       const res = await axiosSecure.post("/announcements", announcement);
       console.log("✅ Announcement posted:", res.data);
+      Swal.fire({
+        icon: "success",
+        title: "Success!",
+        text: "Announcement posted successfully.",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+      reset();
     } catch (error) {
       console.error("❌ Failed to post announcement:", error);
     }
-
-    reset();
   };
 
   return (
