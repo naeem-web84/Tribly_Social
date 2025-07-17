@@ -210,7 +210,7 @@ const AdminLayouts = () => {
                   onClick={() => {
                     document.getElementById("admin-drawer").checked = false;
                   }}
-                  className="flex items-center gap-2 px-3 py-2 rounded bg-secondary text-secondary-content hover:bg-secondary-focus transition-colors duration-200"
+                  className="flex items-center gap-2 px-3 py-2 rounded bg-secondary text-secondary-content hover:bg-blue-500 transition-colors duration-200"
                 >
                   <FaArrowLeft />
                   Back to Home

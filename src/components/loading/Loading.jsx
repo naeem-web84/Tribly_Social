@@ -1,6 +1,6 @@
 import React from "react";
 import Lottie from "lottie-react";
-import loadingHand from "../../assets/lotties/loadingHandLotti.json";
+import loadingHand from "../../assets/lotties/loading-2.json";
 import { FaSpinner } from "react-icons/fa";
 
 const Loading = () => {

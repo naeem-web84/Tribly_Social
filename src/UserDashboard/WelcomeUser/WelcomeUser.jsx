@@ -1,10 +1,12 @@
 import React from "react";
-import { Link } from "react-router";  
+import { Link } from "react-router";
 import Lottie from "lottie-react";
 import welcomeLottie from "../../assets/lotties/welcome-lottie.json";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure/useAxiosSecure";
 import useAuth from "../../hooks/useAuth/useAuth";
+import { motion } from "framer-motion";
+import { Typewriter } from "react-simple-typewriter";
 
 const WelcomeUser = () => {
   const axiosSecure = useAxiosSecure();
@@ -31,63 +33,94 @@ const WelcomeUser = () => {
   });
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-6 p-6 md:p-10">
+    <motion.div
+      className="grid grid-cols-1 lg:grid-cols-2 items-center gap-6 p-6 md:p-10"
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+    >
       {/* Lottie Animation */}
       <div className="w-full flex justify-center">
         <Lottie animationData={welcomeLottie} className="max-w-md w-full" />
       </div>
 
-      {/* Right: Welcome + Stats + Actions */}
+      {/* Right Section */}
       <div className="space-y-6">
         <h1 className="text-3xl md:text-4xl font-bold text-primary">
           Welcome, {userName}! 👋
         </h1>
-        <p className="text-secondary-content">
-          Here’s a quick overview of your activity:
+
+        {/* Typewriter Text */}
+        <p className="text-secondary-content text-lg">
+          <Typewriter
+            words={["Here’s a quick overview of your activity:"]}
+            loop={1}
+            cursor
+            cursorStyle="|"
+            typeSpeed={60}
+            deleteSpeed={40}
+            delaySpeed={1200}
+          />
         </p>
 
         {/* Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-center">
-          <div className="bg-base-100 p-4 rounded-xl shadow border border-primary">
+          <motion.div
+            className="bg-base-100 p-4 rounded-xl shadow border border-primary"
+            whileHover={{ scale: 1.05 }}
+          >
             <h2 className="text-xl font-bold text-primary">
               {postData?.count || 0}
             </h2>
             <p className="text-sm text-base-content">Posts</p>
-          </div>
-          <div className="bg-base-100 p-4 rounded-xl shadow border border-primary">
+          </motion.div>
+          <motion.div
+            className="bg-base-100 p-4 rounded-xl shadow border border-primary"
+            whileHover={{ scale: 1.05 }}
+          >
             <h2 className="text-xl font-bold text-primary">
               {commentData?.count || 0}
             </h2>
             <p className="text-sm text-base-content">Comments</p>
-          </div>
+          </motion.div>
         </div>
 
         {/* Quick Actions */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Link
-            to="myProfile"
-            className="card bg-secondary text-secondary-content p-4 hover:shadow-md rounded-xl transition"
-          >
-            <h2 className="text-lg font-semibold">Update Profile</h2>
-            <p className="text-sm">Make sure your info is up to date.</p>
-          </Link>
-          <Link
-            to="addPosts"
-            className="card bg-secondary text-secondary-content p-4 hover:shadow-md rounded-xl transition"
-          >
-            <h2 className="text-lg font-semibold">Add a Post</h2>
-            <p className="text-sm">Share something new with your audience.</p>
-          </Link>
-          <Link
-            to="myPosts"
-            className="card bg-secondary text-secondary-content p-4 hover:shadow-md rounded-xl transition"
-          >
-            <h2 className="text-lg font-semibold">View Your Posts</h2>
-            <p className="text-sm">Check and manage your posts.</p>
-          </Link>
+          {[
+            {
+              to: "myProfile",
+              title: "Update Profile",
+              desc: "Make sure your info is up to date.",
+            },
+            {
+              to: "addPosts",
+              title: "Add a Post",
+              desc: "Share something new with your audience.",
+            },
+            {
+              to: "myPosts",
+              title: "View Your Posts",
+              desc: "Check and manage your posts.",
+            },
+          ].map((card, i) => (
+            <motion.div
+              key={i}
+              whileHover={{ scale: 1.04 }}
+              className="cursor-pointer"
+            >
+              <Link
+                to={card.to}
+                className="card bg-secondary text-secondary-content p-4 rounded-xl transition hover:shadow-lg"
+              >
+                <h2 className="text-lg font-semibold">{card.title}</h2>
+                <p className="text-sm">{card.desc}</p>
+              </Link>
+            </motion.div>
+          ))}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

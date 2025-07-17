@@ -162,10 +162,10 @@ const User = () => {
               end
               onClick={handleLinkClick}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2 rounded ${
+                `flex bg-secondary text-secondary-content items-center gap-3 px-3 py-2 rounded ${
                   isActive
-                    ? "bg-secondary text-secondary-content"
-                    : "hover:bg-secondary hover:text-secondary-content"
+                    ? "bg-primary text-primary-content"
+                    : "hover:bg-blue-500 hover:text-primary-content"
                 } transition-colors duration-200`
               }
             >

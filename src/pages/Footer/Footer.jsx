@@ -1,6 +1,6 @@
 import React from "react";
-import { Link } from "react-router";
-import { FaFacebookF, FaTwitter, FaGithub, FaInstagram } from "react-icons/fa"; 
+import { Link } from "react-router";  
+import { FaFacebookF, FaTwitter, FaGithub, FaInstagram } from "react-icons/fa";
 import Logo from "../../components/Logo/Logo";
 
 const Footer = () => {
@@ -20,26 +20,49 @@ const Footer = () => {
           <h3 className="text-lg font-semibold text-base-content mb-2">Quick Links</h3>
           <Link to="/" className="hover:text-primary transition-colors duration-300">Home</Link>
           <Link to="/posts" className="hover:text-primary transition-colors duration-300">Posts</Link>
-          <Link to="/membership" className="hover:text-primary transition-colors duration-300">Membership</Link>
-          <Link to="/contact" className="hover:text-primary transition-colors duration-300">Contact</Link>
+          <Link to="/membership/1" className="hover:text-primary transition-colors duration-300">Membership</Link>
         </div>
 
         {/* Right: Social Icons */}
         <div className="space-y-3">
           <h3 className="text-lg font-semibold text-base-content mb-2">Follow Us</h3>
           <div className="flex items-center gap-4">
-            {[FaFacebookF, FaTwitter, FaGithub, FaInstagram].map((Icon, idx) => (
-              <a
-                key={idx}
-                href="#"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-base-content/70 p-3 rounded-full border border-base-content/30 hover:bg-primary hover:text-primary-content transition-colors duration-300"
-                aria-label="Social Link"
-              >
-                <Icon size={20} />
-              </a>
-            ))}
+            <a
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-base-content/70 p-3 rounded-full border border-base-content/30 hover:bg-primary hover:text-primary-content transition-colors duration-300"
+              aria-label="Facebook"
+            >
+              <FaFacebookF size={20} />
+            </a>
+            <a
+              href="https://twitter.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-base-content/70 p-3 rounded-full border border-base-content/30 hover:bg-primary hover:text-primary-content transition-colors duration-300"
+              aria-label="Twitter"
+            >
+              <FaTwitter size={20} />
+            </a>
+            <a
+              href="https://github.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-base-content/70 p-3 rounded-full border border-base-content/30 hover:bg-primary hover:text-primary-content transition-colors duration-300"
+              aria-label="GitHub"
+            >
+              <FaGithub size={20} />
+            </a>
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-base-content/70 p-3 rounded-full border border-base-content/30 hover:bg-primary hover:text-primary-content transition-colors duration-300"
+              aria-label="Instagram"
+            >
+              <FaInstagram size={20} />
+            </a>
           </div>
         </div>
       </div>

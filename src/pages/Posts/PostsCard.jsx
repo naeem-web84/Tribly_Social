@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router";  
+import { Link } from "react-router";
 import { FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa";
 import useAxiosSecure from "../../hooks/useAxiosSecure/useAxiosSecure";
 
@@ -32,6 +32,7 @@ const PostsCard = ({ post }) => {
 
   const postDate = postTime ? new Date(postTime) : null;
   const isValidDate = postDate instanceof Date && !isNaN(postDate);
+  console.log("Post object:", post);
 
   return (
     <article
