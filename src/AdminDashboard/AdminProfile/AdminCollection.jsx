@@ -4,6 +4,15 @@ import { MdPostAdd } from 'react-icons/md';
 import useAxiosSecure from '../../hooks/useAxiosSecure/useAxiosSecure';
 import { motion } from 'framer-motion';
 
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from 'recharts';
+
 const containerVariants = {
   hidden: {},
   visible: {
@@ -17,6 +26,9 @@ const cardVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
 };
+
+const COLORS = ['#22c55e', '#2563eb', '#a78bfa', '#737373']; 
+// green (secondary), blue (primary), purple (accent), gray (neutral)
 
 const AdminCollection = () => {
   const axiosSecure = useAxiosSecure();
@@ -54,6 +66,14 @@ const AdminCollection = () => {
     return <div className="text-center py-6">Loading admin data...</div>;
   }
 
+  // Prepare data for Pie Chart
+  const pieData = [
+    { name: 'Users', value: stats.users },
+    { name: 'Posts', value: stats.posts },
+    { name: 'Comments', value: stats.comments },
+    { name: 'Payments', value: stats.payments },
+  ];
+
   return (
     <motion.div
       className="space-y-6"
@@ -81,7 +101,7 @@ const AdminCollection = () => {
       {/* Stats Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <motion.div
-          className="p-4 bg-primary text-primary-content rounded-lg shadow flex items-center gap-3"
+          className="p-4 bg-secondary text-secondary-content rounded-lg shadow flex items-center gap-3"
           variants={cardVariants}
         >
           <FaUsers className="text-2xl" />
@@ -92,7 +112,7 @@ const AdminCollection = () => {
         </motion.div>
 
         <motion.div
-          className="p-4 bg-secondary text-secondary-content rounded-lg shadow flex items-center gap-3"
+          className="p-4 bg-primary text-primary-content rounded-lg shadow flex items-center gap-3"
           variants={cardVariants}
         >
           <MdPostAdd className="text-2xl" />
@@ -123,6 +143,34 @@ const AdminCollection = () => {
             <p className="text-sm">Payments</p>
           </div>
         </motion.div>
+      </div>
+
+      {/* Pie Chart Section */}
+      <div className="p-6 bg-base-200 rounded-xl shadow-md border border-base-300">
+        <h3 className="text-xl font-bold mb-4 text-center">Statistics Overview</h3>
+        <ResponsiveContainer width="100%" height={300}>
+          <PieChart>
+            <Pie
+              data={pieData}
+              dataKey="value"
+              nameKey="name"
+              cx="50%"
+              cy="50%"
+              outerRadius={100}
+              fill="#8884d8"
+              label={({ name, percent }) =>
+                `${name}: ${(percent * 100).toFixed(0)}%`
+              }
+              isAnimationActive={true}
+            >
+              {pieData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Pie>
+            <Tooltip />
+            <Legend verticalAlign="bottom" height={36} />
+          </PieChart>
+        </ResponsiveContainer>
       </div>
     </motion.div>
   );
