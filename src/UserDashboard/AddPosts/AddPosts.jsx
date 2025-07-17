@@ -7,24 +7,16 @@ import Swal from "sweetalert2";
 import useAxiosSecure from "../../hooks/useAxiosSecure/useAxiosSecure";
 import useAuth from "../../hooks/useAuth/useAuth";
 
-const TAG_OPTIONS = [
-  { value: "Technology", label: "Technology" },
-  { value: "Education", label: "Education" },
-  { value: "Creativity", label: "Creativity" },
-  // Add more tags if needed
-];
-
 const AddPosts = () => {
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
-
-  const { user: authUser } = useAuth();
-  const userEmail = authUser?.email;
+  const { user } = useAuth();
+  const userEmail = user?.email;
 
   const [selectedTag, setSelectedTag] = useState(null);
   const [postLimitReached, setPostLimitReached] = useState(false);
 
-  // Fetch backend user data
+  // ✅ Fetch backend user data
   const { data: backendUser, isLoading: loadingUser, error: userError } = useQuery({
     queryKey: ["user", userEmail],
     queryFn: async () => {
@@ -35,11 +27,25 @@ const AddPosts = () => {
     enabled: !!userEmail,
   });
 
-  // Use backend user data or fallback to authUser
-  const authorName = backendUser?.name || authUser?.displayName || "Unknown User";
-  const authorImage = backendUser?.photoURL || authUser?.photoURL || "/default-user.png";
+  // ✅ Fetch tags
+  const { data: tags = [], isLoading: loadingTags, error: tagsError } = useQuery({
+    queryKey: ["tags"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/tags");
+      return res.data;
+    },
+  });
 
-  // Fetch user's post count to enforce limits
+  const tagOptions = tags.map(tag => ({
+    value: tag.name,
+    label: tag.name,
+  }));
+
+  // ✅ Author Info using backendUser
+  const authorImage = backendUser?.photo || "/default-avatar.jpg";
+  const authorName = backendUser?.userName || user?.displayName || "Unknown User";
+
+  // ✅ Check post count limit
   useQuery({
     queryKey: ["postCount", userEmail],
     queryFn: async () => {
@@ -130,18 +136,18 @@ const AddPosts = () => {
       <h2 className="text-3xl font-bold mb-8 text-center">Add a New Post</h2>
 
       <div className="flex flex-col md:flex-row gap-6">
-        {/* Author info on left */}
-        <div className="flex flex-col items-center md:items-start md:w-1/3">
+        {/* ✅ Author Info */}
+        <div className="flex flex-col items-center md:items-start md:w-1/3 gap-2">
           <img
             src={authorImage}
-            alt={authorName}
-            className="rounded-full w-32 h-32 object-cover mb-4 border-4 border-primary"
+            alt="Author"
+            className="w-24 h-24 rounded-full border-2 border-primary object-cover"
           />
-          <p className="text-xl font-semibold">{authorName}</p>
+          <p className="text-base font-semibold">{authorName}</p>
           <p className="text-sm text-gray-500">{userEmail}</p>
         </div>
 
-        {/* Post form */}
+        {/* Post Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="md:w-2/3 space-y-6">
           <div>
             <label className="block mb-2 font-semibold">Post Title</label>
@@ -170,13 +176,19 @@ const AddPosts = () => {
 
           <div>
             <label className="block mb-2 font-semibold">Tag</label>
-            <Select
-              options={TAG_OPTIONS}
-              value={selectedTag}
-              onChange={setSelectedTag}
-              placeholder="Select a tag"
-              className="text-black"
-            />
+            {loadingTags ? (
+              <p>Loading tags...</p>
+            ) : tagsError ? (
+              <p className="text-error">Failed to load tags</p>
+            ) : (
+              <Select
+                options={tagOptions}
+                value={selectedTag}
+                onChange={setSelectedTag}
+                placeholder="Select a tag"
+                className="text-black"
+              />
+            )}
           </div>
 
           <button

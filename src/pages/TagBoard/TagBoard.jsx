@@ -1,62 +1,77 @@
 // src/components/TagBoard/TagBoard.jsx
 import React from "react";
+import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import categorizedTags from "../../data/tags";
+import { FaHashtag } from "react-icons/fa";
+import useAxios from "../../hooks/useAxiosSecure/useAxios";
 
 const cardVariants = {
   hidden: { opacity: 0, y: 30 },
   visible: (i) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: i * 0.15, duration: 0.5 },
+    transition: { delay: i * 0.05, duration: 0.5 },
   }),
 };
 
 const TagBoard = () => {
+  const axios = useAxios();
+
+  const { data: tags = [], isLoading, isError } = useQuery({
+    queryKey: ["allTags"],
+    queryFn: async () => {
+      const res = await axios.get("/tags");
+      return res.data;
+    },
+  });
+
+  if (isLoading) {
+    return <p className="text-center text-lg py-12">Loading tags...</p>;
+  }
+  if (isError) {
+    return <p className="text-center text-error py-12">Failed to load tags.</p>;
+  }
+  if (tags.length === 0) {
+    return <p className="text-center text-gray-500 py-12">No tags found.</p>;
+  }
+
   return (
     <section className="py-12 px-4 md:px-10 lg:px-20 font-urbanist bg-secondary text-secondary-content">
       <div className="max-w-6xl mx-auto text-center space-y-4 mb-10">
         <h2 className="text-4xl font-bold">🔖 Explore Tags</h2>
         <p className="text-base-content/70 max-w-2xl mx-auto">
-          To find your interest, search by these tags.
+          Discover trending tags added by our community.
         </p>
       </div>
 
-      {/* Tag Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {categorizedTags.map(({ label, labelIcon: LabelIcon, tags }, i) => (
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"
+      >
+        {tags.map((tag, i) => (
           <motion.div
-            key={label}
-            className="bg-base-100 text-base-content rounded-xl shadow-xl p-6 border border-base-300 hover:shadow-2xl transition duration-300"
+            key={tag._id}
             custom={i}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
             variants={cardVariants}
+            className="bg-base-100 text-base-content rounded-xl shadow-lg p-6 border border-base-300 hover:shadow-xl transition duration-300 flex flex-col items-center"
           >
-            {/* Card Header */}
-            <div className="flex items-center gap-3 mb-5">
-              <div className="p-3 bg-primary text-primary-content rounded-full shadow">
-                <LabelIcon className="text-xl" />
-              </div>
-              <h3 className="text-xl font-bold">{label}</h3>
+            <div className="p-3 bg-primary text-primary-content rounded-full shadow mb-3">
+              <FaHashtag size={20} />
             </div>
-
-            {/* Tag List */}
-            <div className="flex flex-wrap gap-3">
-              {tags.map(({ name, icon: TagIcon }) => (
-                <span
-                  key={name}
-                  className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm border border-primary text-secondary-content hover:bg-primary hover:text-primary-content transition-all"
-                >
-                  <TagIcon className="text-secondary-content" />
-                  #{name}
-                </span>
-              ))}
+            <h3 className="text-lg font-semibold text-center break-words max-w-full">
+              {tag.name}
+            </h3>
+            <div className="text-sm text-base-content/70 mt-2 text-center break-words">
+              Added by: <span className="font-medium">{tag.userName}</span>
+            </div>
+            <div className="text-xs text-base-content/50 mt-1 text-center">
+              {new Date(tag.createdAt).toLocaleDateString()}
             </div>
           </motion.div>
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 };
