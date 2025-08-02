@@ -12,6 +12,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
+import Loading from '../../components/loading/Loading';
 
 const containerVariants = {
   hidden: {},
@@ -42,6 +43,8 @@ const AdminCollection = () => {
     },
   });
 
+  console.log("admin data here", admin);
+
   // Fetch all stats in parallel
   const { data: stats, isLoading: statsLoading } = useQuery({
     queryKey: ['adminStats'],
@@ -62,7 +65,7 @@ const AdminCollection = () => {
   });
 
   if (adminLoading || statsLoading) {
-    return <div className="text-center py-6">Loading admin data...</div>;
+    return <Loading></Loading> ;
   }
 
   // Prepare data for Pie Chart
